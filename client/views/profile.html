@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoderSpace — Perfil de Usuario</title>
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+
+  <!-- Tema inicial -->
+  <script>
+    (() => {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
+  
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 border-b border-gray-200/70 dark:border-gray-800/70 bg-white/80 dark:bg-gray-900/80 backdrop-blur">
+    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-8">
+        <a href="#" class="text-2xl font-bold tracking-tight hover:text-indigo-600 dark:hover:text-indigo-400">
+          CoderSpace
+        </a>
+        <ul class="hidden md:flex items-center gap-6 text-gray-700 dark:text-gray-300">
+          <li><a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400">Home</a></li>
+          <li><a href="#" class="text-indigo-600 dark:text-indigo-400 font-medium">Profile</a></li>
+          <li><a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400">Projects</a></li>
+        </ul>
+      </div>
+
+      <!-- Botón tema -->
+      <button id="darkToggle" class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800">
+        🌙
+      </button>
+    </nav>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- TARJETA DE PERFIL -->
+    <div class="rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden mb-6">
+      <!-- Portada -->
+      <div class="h-48 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+      
+      <!-- Info del perfil -->
+      <div class="px-6 pb-6">
+        <!-- Foto y botón -->
+        <div class="flex items-start justify-between -mt-16 mb-4">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" 
+               alt="Juan Pérez" 
+               class="h-32 w-32 rounded-full border-4 border-white dark:border-gray-900 object-cover">
+          <button class="mt-16 px-6 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500">
+            Seguir
+          </button>
+        </div>
+
+        <!-- Nombre -->
+        <h1 class="text-3xl font-bold mb-2">Juan Pérez</h1>
+        <p class="text-gray-600 dark:text-gray-400 mb-3">
+          Desarrollador Full Stack | JavaScript enthusiast 🚀
+        </p>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          Creando aplicaciones web modernas con React y Node.js
+        </p>
+
+        <!-- Estadísticas -->
+        <div class="flex gap-6 text-sm">
+          <div class="text-center">
+            <div class="font-bold text-xl">42</div>
+            <div class="text-gray-500">Proyectos</div>
+          </div>
+          <div class="text-center">
+            <div class="font-bold text-xl">5.5m</div>
+            <div class="text-gray-500">Seguidores</div>
+          </div>
+          <div class="text-center">
+            <div class="font-bold text-xl">356</div>
+            <div class="text-gray-500">Siguiendo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑAS -->
+    <div class="flex gap-2 mb-6">
+      <button class="px-4 py-2 bg-indigo-600 text-white rounded-xl">Proyectos</button>
+      <button class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl">Actividad</button>
+      <button class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl">Información</button>
+    </div>
+
+    <!-- PROYECTOS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- Proyecto 1 -->
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
+            R
+          </div>
+          <div>
+            <h3 class="font-semibold">React Todo App</h3>
+            <p class="text-sm text-gray-500">hace 2 días</p>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+          Una app de tareas simple y elegante
+        </p>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+          <span>⭐ 24</span>
+          <span>🍴 8</span>
+          <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded">
+            React
+          </span>
+        </div>
+      </div>
+
+      <!-- Proyecto 2 -->
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold">
+            N
+          </div>
+          <div>
+            <h3 class="font-semibold">Node API Rest</h3>
+            <p class="text-sm text-gray-500">hace 1 semana</p>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+          API RESTful con autenticación JWT
+        </p>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+          <span>⭐ 18</span>
+          <span>🍴 5</span>
+          <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">
+            Node.js
+          </span>
+        </div>
+      </div>
+
+      <!-- Proyecto 3 -->
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-bold">
+            V
+          </div>
+          <div>
+            <h3 class="font-semibold">Vue Dashboard</h3>
+            <p class="text-sm text-gray-500">hace 3 semanas</p>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+          Panel de administración moderno
+        </p>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+          <span>⭐ 32</span>
+          <span>🍴 12</span>
+          <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded">
+            Vue.js
+          </span>
+        </div>
+      </div>
+
+      <!-- Proyecto 4 -->
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold">
+            J
+          </div>
+          <div>
+            <h3 class="font-semibold">JavaScript Games</h3>
+            <p class="text-sm text-gray-500">hace 1 mes</p>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+          Colección de mini juegos en JS
+        </p>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+          <span>⭐ 45</span>
+          <span>🍴 15</span>
+          <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 rounded">
+            JavaScript
+          </span>
+        </div>
+      </div>
+
+      <!-- Proyecto 5 -->
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center text-white font-bold">
+            C
+          </div>
+          <div>
+            <h3 class="font-semibold">CSS Animations</h3>
+            <p class="text-sm text-gray-500">hace 2 meses</p>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+          Animaciones CSS creativas
+        </p>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+          <span>⭐ 28</span>
+          <span>🍴 9</span>
+          <span class="px-2 py-1 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300 rounded">
+            CSS
+          </span>
+        </div>
+      </div>
+
+      <!-- Proyecto 6 -->
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center text-white font-bold">
+            T
+          </div>
+          <div>
+            <h3 class="font-semibold">TypeScript Utils</h3>
+            <p class="text-sm text-gray-500">hace 3 meses</p>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+          Utilidades en TypeScript
+        </p>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+          <span>⭐ 16</span>
+          <span>🍴 4</span>
+          <span class="px-2 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-700 dark:text-cyan-300 rounded">
+            TypeScript
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Script para el tema -->
+  <script>
+    const btn = document.getElementById('darkToggle');
+    const root = document.documentElement;
+
+    function updateIcon() {
+      btn.textContent = root.classList.contains('dark') ? '☀️' : '🌙';
+    }
+    updateIcon();
+
+    btn.addEventListener('click', () => {
+      root.classList.toggle('dark');
+      localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
+      updateIcon();
+    });
+  </script>
+</body>
+</html>
