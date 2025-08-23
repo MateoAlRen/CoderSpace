@@ -30,7 +30,7 @@
   <main class="flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow p-8 max-w-md w-full">
       <h2 class="text-2xl font-bold mb-6 text-center">Crear cuenta</h2>
-      <form action="#" method="POST" class="space-y-5">
+      <form action="#" method="POST" class="space-y-5" id="formRegister">
         <div>
           <label for="name" class="block text-sm font-medium mb-1">Nombre</label>
           <input id="name" name="name" type="text" required 
@@ -68,26 +68,7 @@
     <p class="text-sm text-slate-600 dark:text-slate-400">© <span id="year"></span> CoderSpace</p>
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const toggle = document.getElementById('dark-toggle');
-    const root = document.documentElement;
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      root.classList.add('dark');
-    }
-    toggle.addEventListener('click', () => {
-      root.classList.toggle('dark');
-      if (root.classList.contains('dark')) {
-        localStorage.theme = 'dark';
-        toggle.textContent = "☀️";
-      } else {
-        localStorage.theme = 'light';
-        toggle.textContent = "🌙";
-      }
-    });
-
-    toggle.textContent = root.classList.contains('dark') ? "☀️" : "🌙";
-  </script>
+  <script src="../js/register.js"></script>
 
 </body>
 </html>
