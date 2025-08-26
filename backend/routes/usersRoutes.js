@@ -56,16 +56,6 @@ router.post('/', async (req, res) => {
 
     try {
         const connection = await conectarDB();
-<<<<<<< HEAD
-        const query = ('INSERT INTO users (first_name, second_name, first_lastname, second_lastname,user_email, user_password, user_photo, user_github, user_linkedin, user_description, user_alias) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        const [rows] = await connection.execute(query, [
-            first_name, second_name, first_lastname, second_lastname,
-            user_email, user_password, user_photo, user_github,
-            user_linkedin, user_description, user_alias
-        ]);
-        await connection.end();
-        res.status(201).json({ mensaje: "Usuario creado con éxito" });
-=======
         try {
             const completion = await openai.chat.completions.create({
                 model: "gpt-4o-mini",
@@ -95,7 +85,6 @@ router.post('/', async (req, res) => {
             res.status(500).json({ mensaje: 'Error del servidor' });
         };
 
->>>>>>> a3fbfce23e9dedea2786ab601bebbbbab68c9702
     } catch (error) {
         console.error('Server error', error);
         res.status(500).json({ mensaje: 'Server error' });
@@ -105,22 +94,14 @@ router.post('/', async (req, res) => {
 // Update user
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-<<<<<<< HEAD
-    const { 
-        first_name, second_name, first_lastname, second_lastname, 
-        user_email, user_password, user_photo, user_github, 
-=======
     const {
         first_name, second_name, first_lastname, second_lastname,
         user_email, user_password, user_photo, user_github,
->>>>>>> a3fbfce23e9dedea2786ab601bebbbbab68c9702
         user_linkedin, user_description, user_alias
     } = req.body;
 
     try {
         const connection = await conectarDB();
-<<<<<<< HEAD
-=======
 
           const userData = {
             first_name,
@@ -155,7 +136,6 @@ router.put('/:id', async (req, res) => {
                 });
             }
 
->>>>>>> a3fbfce23e9dedea2786ab601bebbbbab68c9702
         const query = ('UPDATE users SET first_name = ?, second_name = ?, first_lastname = ?, second_lastname = ?, user_email = ?, user_password = ?, user_photo = ?, user_github = ?, user_linkedin = ?, user_description = ?, user_alias = ? WHERE user_id = ?');
         const [rows] = await connection.execute(query, [
             first_name, second_name, first_lastname, second_lastname,

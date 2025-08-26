@@ -118,28 +118,17 @@
 
     <!-- MAIN CONTENT -->
     <main class="md:col-span-7 space-y-6">
-      <!-- Create Post Section -->
-      <section class="card rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
-        <h2 class="font-semibold mb-3 text-lg">Create Post</h2>
-        <div class="flex items-start gap-3">
-          <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0"></div>
-          <div class="flex-1">
-            <textarea 
-              rows="3" 
-              placeholder="What's on your mind?" 
-              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-y transition-all"
-            ></textarea>
-            <div class="mt-3 flex justify-between items-center">
-              <div class="flex gap-2">
-                <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Add image">📷</button>
-                <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Add emoji">😊</button>
-              </div>
-              <button class="px-6 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-colors font-medium">
-                Post
-              </button>
-            </div>
-          </div>
-        </div>
+      <!-- New Post Button -->
+      <section class="flex justify-center">
+        <button 
+          id="newPostBtn"
+          class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 transition-all hover:shadow-xl hover:scale-105 transform font-semibold"
+        >
+          <svg class="h-6 w-6 group-hover:rotate-90 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Nuevo Post
+        </button>
       </section>
 
       <!-- Posts Feed -->
@@ -263,91 +252,150 @@
           </li>
         </ul>
       </section>
-
     </aside>
+  </div>
+
+  <!-- NEW POST MODAL -->
+  <div id="newPostModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity" id="modalBackdrop"></div>
+    
+    <!-- Modal Content -->
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-2xl transform transition-all">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Crear Nuevo Post</h2>
+          <button 
+            id="closeModalBtn" 
+            class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6 space-y-6">
+          <!-- Title Input -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Título del Post
+            </label>
+            <input 
+              type="text" 
+              id="postTitle"
+              placeholder="Ingresa el título de tu post..."
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+            >
+          </div>
+          
+          <!-- Description Input -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Descripción
+            </label>
+            <textarea 
+              id="postDescription"
+              rows="4" 
+              placeholder="Describe tu proyecto, logro o experiencia..."
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-y transition-all"
+            ></textarea>
+          </div>
+          
+          <!-- Code Fragment Input -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Fragmento de Código (Opcional)
+            </label>
+            <div class="relative">
+              <textarea 
+                id="codeFragment"
+                rows="6" 
+                placeholder="// Pega aquí tu fragmento de código&#10;function ejemplo() {&#10;  return 'Hola mundo!';&#10;}"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-y transition-all font-mono text-sm"
+              ></textarea>
+              <div class="absolute top-3 right-3 text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                CODE
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+          <button 
+            id="cancelBtn"
+            class="px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+          >
+            Cancelar
+          </button>
+          <button 
+            id="publishBtn"
+            class="px-8 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 transition-all hover:shadow-lg transform hover:scale-105 font-semibold"
+          >
+            Publicar Post
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Scripts -->
   <script>
-    // Dark Mode Toggle with Enhanced UX
-    class ThemeManager {
-      constructor() {
-        this.btn = document.getElementById('darkToggle');
-        this.root = document.documentElement;
-        this.init();
-      }
-
-      init() {
-        this.updateIcon();
-        this.btn.addEventListener('click', () => this.toggle());
-        
-        // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          if (!localStorage.getItem('theme')) {
-            this.setTheme(e.matches ? 'dark' : 'light');
-          }
-        });
-      }
-
-      toggle() {
-        const newTheme = this.root.classList.contains('dark') ? 'light' : 'dark';
-        this.setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-      }
-
-      setTheme(theme) {
-        if (theme === 'dark') {
-          this.root.classList.add('dark');
-        } else {
-          this.root.classList.remove('dark');
-        }
-        this.updateIcon();
-      }
-
-      updateIcon() {
-        const isDark = this.root.classList.contains('dark');
-        this.btn.textContent = isDark ? '☀️' : '🌙';
-        this.btn.setAttribute('aria-pressed', isDark.toString());
-        this.btn.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+    // Cambiar tema oscuro/claro
+    const darkToggle = document.getElementById('darkToggle');
+    
+    // Función para cambiar el tema
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      
+      if (isDark) {
+        html.classList.remove('dark');
+        darkToggle.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark');
+        darkToggle.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
       }
     }
-
-    // Initialize theme manager
-    document.addEventListener('DOMContentLoaded', () => {
-      new ThemeManager();
-    });
-
-    // Enhanced interactions
-    document.addEventListener('DOMContentLoaded', () => {
-      // Add ripple effect to buttons (simple version)
-      const buttons = document.querySelectorAll('button');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          const ripple = document.createElement('span');
-          const rect = this.getBoundingClientRect();
-          const size = Math.max(rect.width, rect.height);
-          const x = e.clientX - rect.left - size / 2;
-          const y = e.clientY - rect.top - size / 2;
-          
-          ripple.style.cssText = `
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.6);
-            width: ${size}px;
-            height: ${size}px;
-            left: ${x}px;
-            top: ${y}px;
-            animation: ripple 0.6s ease-out;
-            pointer-events: none;
-          `;
-          
-          this.style.position = 'relative';
-          this.style.overflow = 'hidden';
-          this.appendChild(ripple);
-          
-          setTimeout(() => ripple.remove(), 600);
-        });
-      });
+    
+    // Configurar el botón
+    darkToggle.addEventListener('click', toggleTheme);
+    
+    // Modal - Variables principales
+    const modal = document.getElementById('newPostModal');
+    const openBtn = document.getElementById('newPostBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const backdrop = document.getElementById('modalBackdrop');
+    
+    // Abrir modal
+    function openModal() {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Evita scroll del fondo
+    }
+    
+    // Cerrar modal
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto'; // Restaura el scroll
+    }
+    
+    // Event listeners del modal
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    
+    // Cerrar con tecla Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
     });
   </script>
 

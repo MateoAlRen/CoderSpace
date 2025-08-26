@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CoderSpace — Red Social para Programadores</title>
+  <title>CoderSpace — Social Network for Programmers</title>
   <!-- TailwindCSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -27,7 +27,7 @@
         <a href="#home" class="px-3 py-2 rounded-xl text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
         <a href="./views/login.html" class="px-3 py-2 rounded-xl text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Login</a>
         <a href="./views/register.html" class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 shadow-sm">Register</a>
-        <!-- Botón modo oscuro -->
+        <!-- Dark mode button -->
         <button id="dark-toggle" class="ml-3 px-3 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 dark:text-slate-100">
           🌙
         </button>
@@ -41,11 +41,11 @@
       <div class="absolute inset-0 bg-gradient-to-b from-violet-700 via-violet-700 to-violet-800"></div>
       <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24">
         <div class="max-w-2xl">
-          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">Conecta con devs. Comparte tu progreso. Crece.</h1>
-          <p class="mt-4 text-violet-100">Una red social minimalista para programadores: feed limpio, perfiles claros y espacios para aprender juntos.</p>
+          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">Connect with devs. Share your progress. Grow.</h1>
+          <p class="mt-4 text-violet-100">A minimalist social network for programmers: clean feed, clear profiles and spaces to learn together.</p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#register" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl bg-white text-slate-900 font-semibold shadow hover:shadow-md">Empezar</a>
-            <a href="#features" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl border border-white/30 text-white hover:bg-white/10">Cómo funciona</a>
+            <a href="#register" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl bg-white text-slate-900 font-semibold shadow hover:shadow-md">Get Started</a>
+            <a href="#features" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl border border-white/30 text-white hover:bg-white/10">How it works</a>
           </div>
         </div>
       </div>
@@ -55,52 +55,93 @@
     <section id="features" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
       <div class="grid md:grid-cols-3 gap-6">
         <article class="rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-sm transition">
-          <h3 class="font-semibold">Feed limpio</h3>
+          <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-xl flex items-center justify-center mb-4">
+            <span class="text-2xl">📰</span>
+          </div>
+          <h3 class="font-semibold">Clean Feed</h3>
           <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel lorem ac nibh pulvinar porta.
+            Experience distraction-free browsing with our curated feed. See code snippets, project updates, and tech discussions without the noise of traditional social media.
           </p>
         </article>
         <article class="rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-sm transition">
-          <h3 class="font-semibold">Perfiles claros</h3>
+          <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-xl flex items-center justify-center mb-4">
+            <span class="text-2xl">👤</span>
+          </div>
+          <h3 class="font-semibold">Developer Profiles</h3>
           <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus.
+            Showcase your skills with integrated GitHub stats, tech stack highlights, and project portfolios. Connect with developers who share your interests and expertise.
           </p>
         </article>
         <article class="rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-sm transition">
-          <h3 class="font-semibold">Comunidades</h3>
+          <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-xl flex items-center justify-center mb-4">
+            <span class="text-2xl">🔍</span>
+          </div>
+          <h3 class="font-semibold">Discover Profiles</h3>
           <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus.
+            Find and connect with developers based on their skills, projects, and interests. Browse profiles to discover new collaborators and mentors.
           </p>
         </article>
       </div>
     </section>
 
-    <!-- Feed -->
+    <!-- Info Section -->
     <section class="bg-slate-50 dark:bg-slate-800 border-y border-slate-200 dark:border-slate-700">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <h2 class="text-xl font-semibold mb-6">Explora el feed</h2>
-        <div class="space-y-6">
-          <article class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-6 hover:shadow-sm transition">
-            <div class="flex items-center gap-3">
-              <div class="h-10 w-10 rounded-full bg-violet-200"></div>
-              <div>
-                <p class="font-semibold">dev_lorem</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400">hace 2 h</p>
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-2xl font-semibold mb-6">Why CoderSpace?</h2>
+          <p class="text-lg text-slate-600 dark:text-slate-400 mb-12">Built by developers, for developers. No distractions, just pure focus on what matters.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <!-- Info Card 1 -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">⚡</span>
               </div>
+              <h3 class="text-xl font-semibold">Fast & Simple</h3>
             </div>
-            <p class="mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod nisl nunc aliquet.</p>
-          </article>
+            <p class="text-slate-600 dark:text-slate-400">No bloated features or complex interfaces. Just clean, fast, and intuitive design that gets out of your way.</p>
+          </div>
 
-          <article class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-6 hover:shadow-sm transition">
-            <div class="flex items-center gap-3">
-              <div class="h-10 w-10 rounded-full bg-violet-200"></div>
-              <div>
-                <p class="font-semibold">codespace_user</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400">ayer</p>
+          <!-- Info Card 2 -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">🤖</span>
               </div>
+              <h3 class="text-xl font-semibold">Safe Posts</h3>
             </div>
-            <p class="mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent a justo ut arcu sodales iaculis.</p>
-          </article>
+            <p class="text-slate-600 dark:text-slate-400">Secure posts for everyone. Our AI manages content to ensure a respectful and professional environment for all developers.</p>
+          </div>
+
+          <!-- Info Card 3 -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">🚀</span>
+              </div>
+              <h3 class="text-xl font-semibold">Career Growth</h3>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400">Showcase your projects, get feedback from peers, and discover opportunities that match your skills and interests.</p>
+          </div>
+
+          <!-- Info Card 4 -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">💡</span>
+              </div>
+              <h3 class="text-xl font-semibold">Learn Together</h3>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400">Share knowledge, solve problems together, and stay updated with the latest trends in technology and programming.</p>
+          </div>
+        </div>
+        
+        <div class="text-center mt-12">
+          <a href="#register" class="inline-flex items-center px-6 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-semibold shadow-sm transition-colors">
+            Join the Community
+          </a>
         </div>
       </div>
     </section>
@@ -111,15 +152,15 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
       <p class="text-sm text-slate-600 dark:text-slate-400">© <span id="year"></span> CoderSpace</p>
       <div class="flex gap-4 text-sm">
-        <a href="#home" class="hover:underline">Inicio</a>
-        <a href="#login" class="hover:underline">Login</a>
-        <a href="#register" class="hover:underline">Register</a>
+        <a href="#home" class="hover:underline">Home</a>
+        <a href="./views/login.html" class="hover:underline">Login</a>
+        <a href="./views/register.html" class="hover:underline">Register</a>
       </div>
     </div>
   </footer>
 
   <script>
-    // Año dinámico
+    // Dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Toggle Dark Mode

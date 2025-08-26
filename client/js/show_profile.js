@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:3000/users";
-const USER_ID = localStorage.getItem("userId")
+const USER_ID = 4
 
 const profileImage = document.getElementById("profileImage");
 const profileName = document.getElementById("profileName");
