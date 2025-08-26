@@ -75,35 +75,30 @@ function formatTimeAgo(dateString) {
   const postDate = new Date(dateString);
   const now = new Date();
   const seconds = Math.floor((now - postDate) / 1000);
-  let interval = seconds / 31536000;
-  if (interval > 1) {
-    return `Hace ${Math.floor(interval)} años`;
+
+  // Array de intervalos de tiempo y sus unidades.
+  const intervals = [
+    { name: 'año', seconds: 31536000 },
+    { name: 'mes', seconds: 2592000 },
+    { name: 'día', seconds: 86400 },
+    { name: 'hora', seconds: 3600 },
+    { name: 'minuto', seconds: 60 }
+  ];
+
+  for (const interval of intervals) {
+    const value = seconds / interval.seconds;
+    if (value > 1) {
+      const roundedValue = Math.floor(value);
+      const unit = roundedValue === 1 ? interval.name : `${interval.name}s`;
+      return `Hace ${roundedValue} ${unit}`;
+    }
   }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    return `Hace ${Math.floor(interval)} meses`;
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    return `Hace ${Math.floor(interval)} días`;
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    return `Hace ${Math.floor(interval)} horas`;
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    return `Hace ${Math.floor(interval)} minutos`;
-  }
+
   return `Hace ${Math.floor(seconds)} segundos`;
 }
 
 
 function renderPosts(posts) {
-  if (!postsContainer) {
-    console.error("El contenedor de posts con ID 'postsContainer' no fue encontrado.");
-    return;
-  }
 
   postsContainer.innerHTML = '';
 
