@@ -36,85 +36,136 @@ const moderationPrompt = `
 6. No ignores ninguna palabra. No justifiques. Solo responde con ACEPTADO o RECHAZADO.
 `;
 
-
 const router = express.Router();
 
-// Comments
-// Get all comments
+// Post
+// Obtener todos los post
 router.get('/', async (req, res) => {
     try {
         const connection = await conectarDB();
-        const [rows] = await connection.execute('SELECT * FROM commentary');
+        const [rows] = await connection.execute('SELECT * FROM post');
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('There`s an error', error);
-        res.status(500).json({ mensaje: 'There`s an error'});
+        console.error('There`s an error in the server:', error);
+        res.status(500).json({ mensaje: 'There`s an error in the server' });
     }
 });
 
-// Get a comment by id
+// Obtener un post por id
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const connection = await conectarDB();
-        const query = ('SELECT * FROM commentary WHERE comment_id = ?');
+        const query = ('SELECT * FROM post WHERE post_id = ?');
         const [rows] = await connection.execute(query, [id]);
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: "Server error" });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: "There`s an error in the server" });
     }
 });
 
-// Create comment
+// Crear post
 router.post('/', async (req, res) => {
-    const { comment_description, user_id, post_id } = req.body;
+    const { user_id , post_title , post_description, post_code } = req.body;
 
     try {
         const connection = await conectarDB();
-        const query = ('INSERT INTO commentary (comment_description, user_id, post_id) VALUES (?, ?, ?)');
-        const [rows] = await connection.execute(query, [ comment_description, user_id, post_id ]);
+
+         const postData = {
+            user_id,
+            post_title, 
+            post_description, 
+            post_code
+        };
+
+        const postDataJson = JSON.stringify(postData, null, 2);
+        const completion = await openai.chat.completions.create({
+                model: "gpt-4o-mini",
+                messages: [
+                    { role: "system", content: moderationPrompt },
+                    { role: "user", content: postDataJson }, 
+                ],
+            });
+
+            const decision = completion.choices[0].message.content;
+
+            if (decision === "RECHAZADO") {
+                return res.status(400).json({
+                    ok: false,
+                    message: "El contenido fue rechazado por el sistema de moderación IA",
+                });
+            }
+
+
+        const query = ('INSERT INTO post (user_id, post_title, post_description, post_code) VALUES (?, ?, ?, ?)');
+        const [rows] = await connection.execute(query, [ user_id, post_title, post_description, post_code ]);
         await connection.end();
-        res.status(201).json({ mensaje: "comment successfully created" });
+        res.status(201).json({ mensaje: "Post created succesfully" });
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: 'Server error' });
+        console.error('There`s an error in the server:', error);
+        res.status(500).json({ mensaje: 'There`s an error in the server' });
     }
 });
 
-// Update comment
+// Actualizar post
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { comment_description, user_id, post_id } = req.body;
+    const { user_id, post_title, post_description, post_code } = req.body;
 
     try {
         const connection = await conectarDB();
-        const query = ('UPDATE commentary SET comment_description = ?, user_id = ?, post_id = ? WHERE comment_id = ?');
-        const [rows] = await connection.execute(query, [ comment_description, user_id, post_id, id]);
+
+        const postData = {
+            user_id,
+            post_title, 
+            post_description, 
+            post_code
+        };
+
+        const postDataJson = JSON.stringify(postData, null, 2);
+        const completion = await openai.chat.completions.create({
+                model: "gpt-4o-mini",
+                messages: [
+                    { role: "system", content: moderationPrompt },
+                    { role: "user", content: postDataJson }, 
+                ],
+            });
+
+            const decision = completion.choices[0].message.content;
+
+            if (decision === "RECHAZADO") {
+                return res.status(400).json({
+                    ok: false,
+                    message: "El contenido fue rechazado por el sistema de moderación IA",
+                });
+            }
+
+        const query = ('UPDATE post SET user_id = ?, post_title = ?, post_description = ?, post_code = ? WHERE post_id = ?');
+        const [rows] = await connection.execute(query, [ user_id, post_title, post_description, post_code, id]);
         await connection.end();
-        res.status(200).json({ mensaje: 'comment successfully updated' });
+        res.status(200).json({ mensaje: 'Post updated successfully' });
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: 'Server error' });
+        console.error('There`s an error in the server:', error);
+        res.status(500).json({ mensaje: 'There`s an error in the server' });
     }
 });
 
-// Delete comment
+// Eliminar post
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const connection = await conectarDB();
-        const query = 'DELETE FROM commentary WHERE comment_id = ?';
+        const query = 'DELETE FROM post WHERE post_id = ?';
         const [rows] = await connection.execute(query, [id]);
         await connection.end();
-        res.status(200).json({ mensaje: "comment successfully deleted" });
+        res.status(200).json({ mensaje: "Post deleted successfully." });
     } catch (error) {
-        console.error("Server error", error);
-        res.status(500).json({ mensaje:'Server error' });
+        console.error("There`s an error in the server:", error);
+        res.status(500).json({ mensaje:'There`s an error in the server' });
     }
 });
 
 export default router;
-

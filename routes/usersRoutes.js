@@ -21,8 +21,8 @@ Eres un sistema de moderación. Tu única tarea es leer el nombre del usuario y 
 
 const router = express.Router();
 
-// Users
-// Get all users
+// usuarios
+// Obtener todos los usuarios
 router.get('/', async (req, res) => {
     try {
         const connection = await conectarDB();
@@ -30,12 +30,12 @@ router.get('/', async (req, res) => {
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: 'Server error' });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: 'Error del servidor' });
     }
 });
 
-// Get a user by ID
+// Obtener un usuario por id
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -45,27 +45,17 @@ router.get('/:id', async (req, res) => {
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: "Server error" });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: "Error del servidor" });
     }
 });
 
-// Create user
+// Crear usuario
 router.post('/', async (req, res) => {
     const { first_name, user_email, user_password } = req.body;
 
     try {
         const connection = await conectarDB();
-<<<<<<< HEAD
-        const query = ('INSERT INTO users (first_name, second_name, first_lastname, second_lastname,user_email, user_password, user_photo, user_github, user_linkedin, user_description, user_alias) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        const [rows] = await connection.execute(query, [
-            first_name, second_name, first_lastname, second_lastname,
-            user_email, user_password, user_photo, user_github,
-            user_linkedin, user_description, user_alias
-        ]);
-        await connection.end();
-        res.status(201).json({ mensaje: "Usuario creado con éxito" });
-=======
         try {
             const completion = await openai.chat.completions.create({
                 model: "gpt-4o-mini",
@@ -95,32 +85,23 @@ router.post('/', async (req, res) => {
             res.status(500).json({ mensaje: 'Error del servidor' });
         };
 
->>>>>>> a3fbfce23e9dedea2786ab601bebbbbab68c9702
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: 'Server error' });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: 'Error del servidor' });
     }
 });
 
-// Update user
+// Actualizar usuario
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-<<<<<<< HEAD
-    const { 
-        first_name, second_name, first_lastname, second_lastname, 
-        user_email, user_password, user_photo, user_github, 
-=======
     const {
         first_name, second_name, first_lastname, second_lastname,
         user_email, user_password, user_photo, user_github,
->>>>>>> a3fbfce23e9dedea2786ab601bebbbbab68c9702
         user_linkedin, user_description, user_alias
     } = req.body;
 
     try {
         const connection = await conectarDB();
-<<<<<<< HEAD
-=======
 
           const userData = {
             first_name,
@@ -155,7 +136,6 @@ router.put('/:id', async (req, res) => {
                 });
             }
 
->>>>>>> a3fbfce23e9dedea2786ab601bebbbbab68c9702
         const query = ('UPDATE users SET first_name = ?, second_name = ?, first_lastname = ?, second_lastname = ?, user_email = ?, user_password = ?, user_photo = ?, user_github = ?, user_linkedin = ?, user_description = ?, user_alias = ? WHERE user_id = ?');
         const [rows] = await connection.execute(query, [
             first_name, second_name, first_lastname, second_lastname,
@@ -163,14 +143,14 @@ router.put('/:id', async (req, res) => {
             user_linkedin, user_description, user_alias, id
         ]);
         await connection.end();
-        res.status(200).json({ mensaje: 'User successfully updated' });
+        res.status(200).json({ mensaje: 'Usuario actualizado correctamente' });
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: 'Server error' });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: 'Error del servidor' });
     }
 });
 
-// Delete user
+// Eliminar usuario
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -178,7 +158,7 @@ router.delete('/:id', async (req, res) => {
         const query = 'DELETE FROM users WHERE user_id = ?';
         const [rows] = await connection.execute(query, [id]);
         await connection.end();
-        res.status(200).json({ mensaje: "User successfully deleted" });
+        res.status(200).json({ mensaje: "Usuario eliminado con éxito" });
     } catch (error) {
         console.error("Error del servidor", error);
         res.status(500).json({ mensaje: 'Error del servidor' });

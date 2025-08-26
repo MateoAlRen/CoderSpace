@@ -39,8 +39,8 @@ const moderationPrompt = `
 
 const router = express.Router();
 
-// Comments
-// Get all comments
+// Comentarios
+// Obtener todos los comentarios
 router.get('/', async (req, res) => {
     try {
         const connection = await conectarDB();
@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Get a comment by id
+// Obtener un comentario por id
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -63,12 +63,12 @@ router.get('/:id', async (req, res) => {
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: "Server error" });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: "Error del servidor" });
     }
 });
 
-// Create comment
+// Crear cometario
 router.post('/', async (req, res) => {
     const { comment_description, user_id, post_id } = req.body;
 
@@ -77,14 +77,14 @@ router.post('/', async (req, res) => {
         const query = ('INSERT INTO commentary (comment_description, user_id, post_id) VALUES (?, ?, ?)');
         const [rows] = await connection.execute(query, [ comment_description, user_id, post_id ]);
         await connection.end();
-        res.status(201).json({ mensaje: "comment successfully created" });
+        res.status(201).json({ mensaje: "Usuario creado con éxito" });
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: 'Server error' });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: 'Error del servidor' });
     }
 });
 
-// Update comment
+// Actualizar comentario
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { comment_description, user_id, post_id } = req.body;
@@ -94,14 +94,14 @@ router.put('/:id', async (req, res) => {
         const query = ('UPDATE commentary SET comment_description = ?, user_id = ?, post_id = ? WHERE comment_id = ?');
         const [rows] = await connection.execute(query, [ comment_description, user_id, post_id, id]);
         await connection.end();
-        res.status(200).json({ mensaje: 'comment successfully updated' });
+        res.status(200).json({ mensaje: 'Usuario actualizado correctamente' });
     } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: 'Server error' });
+        console.error('Error del servidor', error);
+        res.status(500).json({ mensaje: 'Error del servidor' });
     }
 });
 
-// Delete comment
+// Eliminar comentario
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -109,10 +109,10 @@ router.delete('/:id', async (req, res) => {
         const query = 'DELETE FROM commentary WHERE comment_id = ?';
         const [rows] = await connection.execute(query, [id]);
         await connection.end();
-        res.status(200).json({ mensaje: "comment successfully deleted" });
+        res.status(200).json({ mensaje: "Usuario eliminado con éxito" });
     } catch (error) {
-        console.error("Server error", error);
-        res.status(500).json({ mensaje:'Server error' });
+        console.error("Error del servidor", error);
+        res.status(500).json({ mensaje:'Error del servidor' });
     }
 });
 
