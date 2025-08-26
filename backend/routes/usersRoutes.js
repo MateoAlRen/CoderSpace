@@ -42,11 +42,11 @@ router.post('/', async (req, res) => {
 
     try {
         const connection = await conectarDB();
-        const query = ('INSERT INTO users (first_name, second_name, first_lastname, second_lastname,user_email, user_password, user_photo, user_github, user_linkedin, user_description, user_alias, skills_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        const query = ('INSERT INTO users (first_name, second_name, first_lastname, second_lastname,user_email, user_password, user_photo, user_github, user_linkedin, user_description, user_alias) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         const [rows] = await connection.execute(query, [
             first_name, second_name, first_lastname, second_lastname,
             user_email, user_password, user_photo, user_github,
-            user_linkedin, user_description, user_alias, skills_id
+            user_linkedin, user_description, user_alias
         ]);
         await connection.end();
         res.status(201).json({ mensaje: "Usuario creado con éxito" });
@@ -62,16 +62,16 @@ router.put('/:id', async (req, res) => {
     const { 
         first_name, second_name, first_lastname, second_lastname, 
         user_email, user_password, user_photo, user_github, 
-        user_linkedin, user_description, user_alias, skills_id 
+        user_linkedin, user_description, user_alias
     } = req.body;
 
     try {
         const connection = await conectarDB();
-        const query = ('UPDATE users SET first_name = ?, second_name = ?, first_lastname = ?, second_lastname = ?, user_email = ?, user_password = ?, user_photo = ?, user_github = ?, user_linkedin = ?, user_description = ?, user_alias = ?, skills_id = ? WHERE user_id = ?');
+        const query = ('UPDATE users SET first_name = ?, second_name = ?, first_lastname = ?, second_lastname = ?, user_email = ?, user_password = ?, user_photo = ?, user_github = ?, user_linkedin = ?, user_description = ?, user_alias = ? WHERE user_id = ?');
         const [rows] = await connection.execute(query, [
             first_name, second_name, first_lastname, second_lastname,
             user_email, user_password, user_photo, user_github,
-            user_linkedin, user_description, user_alias, skills_id, id
+            user_linkedin, user_description, user_alias, id
         ]);
         await connection.end();
         res.status(200).json({ mensaje: 'Usuario actualizado correctamente' });
