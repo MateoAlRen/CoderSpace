@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar Usuario | CoderSpace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 shadow">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+      Coder<span class="text-purple-600">Space</span>
+    </h1>
+    <button id="dark-toggle" 
+      class="ml-3 px-3 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-700 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200">
+      🌙
+    </button>
+  </header>
+
+  <!-- Contenido -->
+  <main class="max-w-4xl mx-auto px-4 py-10">
+    <section class="space-y-6">
+      <div class="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <h2 class="text-xl font-semibold mb-4">Editar Usuario</h2>
+
+        <form class="space-y-5">
+          <!-- Nombres -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Primer Nombre</label>
+              <input type="text" placeholder="Ej: Juan"
+                class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+                bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Segundo Nombre</label>
+              <input type="text" placeholder="Ej: Carlos"
+                class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+                bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+            </div>
+          </div>
+
+          <!-- Apellidos -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Primer Apellido</label>
+              <input type="text" placeholder="Ej: Pérez"
+                class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+                bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Segundo Apellido</label>
+              <input type="text" placeholder="Ej: López"
+                class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+                bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+            </div>
+          </div>
+
+          <!-- Alias -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Alias</label>
+            <input type="text" placeholder="@juanperez"
+              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Email</label>
+            <input type="email" placeholder="ejemplo@mail.com"
+              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+          </div>
+
+          <!-- Contraseña -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Contraseña</label>
+            <input type="password" placeholder="••••••••"
+              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+          </div>
+
+          <!-- Foto de perfil -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Foto de perfil (URL)</label>
+            <input type="url" placeholder="https://mi-foto.com/avatar.jpg"
+              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+          </div>
+
+          <!-- Redes -->
+          <div>
+            <label class="block text-sm font-medium mb-1">GitHub</label>
+            <input type="url" placeholder="https://github.com/usuario"
+              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">LinkedIn</label>
+            <input type="url" placeholder="https://linkedin.com/in/usuario"
+              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
+          </div>
+
+          <!-- Descripción -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Descripción</label>
+            <textarea rows="4" placeholder="Escribe una breve descripción sobre ti..."
+              class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
+          </div>
+
+          <!-- Botones -->
+          <div class="flex justify-end gap-3">
+            <button type="button"
+              class="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 
+              bg-white dark:bg-gray-950 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+              Cancelar
+            </button>
+            <button type="submit"
+              class="px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 transition-colors duration-200">
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- JS -->
+  <script>
+    // Toggle Dark Mode - Código que funciona
+    const toggle = document.getElementById('dark-toggle');
+    const root = document.documentElement;
+
+    if (localStorage.theme === 'dark' || 
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      root.classList.toggle('dark');
+      if (root.classList.contains('dark')) {
+        localStorage.theme = 'dark';
+        toggle.textContent = "☀️";
+      } else {
+        localStorage.theme = 'light';
+        toggle.textContent = "🌙";
+      }
+    });
+
+    toggle.textContent = root.classList.contains('dark') ? "☀️" : "🌙";
+  </script>
+</body>
+</html>
