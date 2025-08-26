@@ -35,13 +35,13 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium mb-1">Primer Nombre</label>
-              <input type="text" placeholder="Ej: Juan"
+              <input id="firstName" required type="text" placeholder="Ej: Juan"
                 class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
                 bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-medium mb-1">Segundo Nombre</label>
-              <input type="text" placeholder="Ej: Carlos"
+              <input id="secondName" type="text" placeholder="Ej: Carlos"
                 class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
                 bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
             </div>
@@ -51,13 +51,13 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium mb-1">Primer Apellido</label>
-              <input type="text" placeholder="Ej: Pérez"
+              <input id="lastName1" type="text" placeholder="Ej: Pérez"
                 class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
                 bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-medium mb-1">Segundo Apellido</label>
-              <input type="text" placeholder="Ej: López"
+              <input id="lastName2" type="text" placeholder="Ej: López"
                 class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
                 bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
             </div>
@@ -66,7 +66,7 @@
           <!-- Alias -->
           <div>
             <label class="block text-sm font-medium mb-1">Alias</label>
-            <input type="text" placeholder="@juanperez"
+            <input id="alias" type="text" placeholder="@juanperez"
               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
           </div>
@@ -74,7 +74,7 @@
           <!-- Email -->
           <div>
             <label class="block text-sm font-medium mb-1">Email</label>
-            <input type="email" placeholder="ejemplo@mail.com"
+            <input id="email" type="email" placeholder="ejemplo@mail.com"
               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
           </div>
@@ -82,7 +82,7 @@
           <!-- Contraseña -->
           <div>
             <label class="block text-sm font-medium mb-1">Contraseña</label>
-            <input type="password" placeholder="••••••••"
+            <input id="password" type="password" placeholder="••••••••"
               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
           </div>
@@ -90,7 +90,7 @@
           <!-- Foto de perfil -->
           <div>
             <label class="block text-sm font-medium mb-1">Foto de perfil (URL)</label>
-            <input type="url" placeholder="https://mi-foto.com/avatar.jpg"
+            <input id="avatar" type="url" placeholder="https://mi-foto.com/avatar.jpg"
               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
           </div>
@@ -98,14 +98,14 @@
           <!-- Redes -->
           <div>
             <label class="block text-sm font-medium mb-1">GitHub</label>
-            <input type="url" placeholder="https://github.com/usuario"
+            <input id="github" type="url" placeholder="https://github.com/usuario"
               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
           </div>
 
           <div>
             <label class="block text-sm font-medium mb-1">LinkedIn</label>
-            <input type="url" placeholder="https://linkedin.com/in/usuario"
+            <input id="linkedin" type="url" placeholder="https://linkedin.com/in/usuario"
               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"/>
           </div>
@@ -113,14 +113,14 @@
           <!-- Descripción -->
           <div>
             <label class="block text-sm font-medium mb-1">Descripción</label>
-            <textarea rows="4" placeholder="Escribe una breve descripción sobre ti..."
+            <textarea id="description" rows="4" placeholder="Escribe una breve descripción sobre ti..."
               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
           </div>
 
           <!-- Botones -->
           <div class="flex justify-end gap-3">
-            <button type="button"
+            <button id="cancelBtn" type="button"
               class="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 
               bg-white dark:bg-gray-950 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
               Cancelar
@@ -161,5 +161,6 @@
 
     toggle.textContent = root.classList.contains('dark') ? "☀️" : "🌙";
   </script>
+  <script src="../js/edit_profile.js"></script>
 </body>
 </html>
