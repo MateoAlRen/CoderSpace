@@ -57,6 +57,21 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const connection = await conectarDB();
+    const query = ("SELECT * FROM post WHERE post_id = ?");
+    const [rows] = await connection.execute(query, [id]);
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("Server error", error);
+    res.status(500).json({ mensaje: "Server error" });
+  }
+});
+
+// Get post depending on a user
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const connection = await conectarDB();
     const query = `
       SELECT u.user_id, u.first_name, u.first_lastname, 
              p.post_title, p.post_description, p.post_code, p.created_at
