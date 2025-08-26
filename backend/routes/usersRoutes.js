@@ -21,8 +21,8 @@ Eres un sistema de moderación. Tu única tarea es leer el nombre del usuario y 
 
 const router = express.Router();
 
-// usuarios
-// Obtener todos los usuarios
+// Users
+// Get all users
 router.get('/', async (req, res) => {
     try {
         const connection = await conectarDB();
@@ -30,12 +30,12 @@ router.get('/', async (req, res) => {
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('Error del servidor', error);
-        res.status(500).json({ mensaje: 'Error del servidor' });
+        console.error('Server error', error);
+        res.status(500).json({ mensaje: 'Server error' });
     }
 });
 
-// Obtener un usuario por id
+// Get a user by ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -45,12 +45,12 @@ router.get('/:id', async (req, res) => {
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('Error del servidor', error);
-        res.status(500).json({ mensaje: "Error del servidor" });
+        console.error('Server error', error);
+        res.status(500).json({ mensaje: "Server error" });
     }
 });
 
-// Crear usuario
+// Create user
 router.post('/', async (req, res) => {
     const { first_name, user_email, user_password } = req.body;
 
@@ -86,12 +86,12 @@ router.post('/', async (req, res) => {
         };
 
     } catch (error) {
-        console.error('Error del servidor', error);
-        res.status(500).json({ mensaje: 'Error del servidor' });
+        console.error('Server error', error);
+        res.status(500).json({ mensaje: 'Server error' });
     }
 });
 
-// Actualizar usuario
+// Update user
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const {
@@ -143,14 +143,14 @@ router.put('/:id', async (req, res) => {
             user_linkedin, user_description, user_alias, id
         ]);
         await connection.end();
-        res.status(200).json({ mensaje: 'Usuario actualizado correctamente' });
+        res.status(200).json({ mensaje: 'User successfully updated' });
     } catch (error) {
-        console.error('Error del servidor', error);
-        res.status(500).json({ mensaje: 'Error del servidor' });
+        console.error('Server error', error);
+        res.status(500).json({ mensaje: 'Server error' });
     }
 });
 
-// Eliminar usuario
+// Delete user
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -158,7 +158,7 @@ router.delete('/:id', async (req, res) => {
         const query = 'DELETE FROM users WHERE user_id = ?';
         const [rows] = await connection.execute(query, [id]);
         await connection.end();
-        res.status(200).json({ mensaje: "Usuario eliminado con éxito" });
+        res.status(200).json({ mensaje: "User successfully deleted" });
     } catch (error) {
         console.error("Error del servidor", error);
         res.status(500).json({ mensaje: 'Error del servidor' });

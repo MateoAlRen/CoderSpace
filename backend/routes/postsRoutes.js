@@ -39,7 +39,7 @@ const moderationPrompt = `
 const router = express.Router();
 
 // Post
-// Obtener todos los post
+// Get all posts
 router.get('/', async (req, res) => {
     try {
         const connection = await conectarDB();
@@ -49,10 +49,11 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.error('There`s an error in the server:', error);
         res.status(500).json({ mensaje: 'There`s an error in the server' });
+
     }
 });
 
-// Obtener un post por id
+// Get a post by id
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -62,12 +63,12 @@ router.get('/:id', async (req, res) => {
         await connection.end();
         res.json(rows);
     } catch (error) {
-        console.error('Error del servidor', error);
-        res.status(500).json({ mensaje: "There`s an error in the server" });
+        console.error('Server error', error);
+        res.status(500).json({ mensaje: "Server error" });
     }
 });
 
-// Crear post
+// Create post
 router.post('/', async (req, res) => {
     const { user_id , post_title , post_description, post_code } = req.body;
 
@@ -110,7 +111,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Actualizar post
+// Update post
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { user_id, post_title, post_description, post_code } = req.body;
@@ -150,10 +151,11 @@ router.put('/:id', async (req, res) => {
     } catch (error) {
         console.error('There`s an error in the server:', error);
         res.status(500).json({ mensaje: 'There`s an error in the server' });
+
     }
 });
 
-// Eliminar post
+// Delete post
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
