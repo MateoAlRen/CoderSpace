@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:3000/users";
-const USER_ID = 8; //localStorage.getItem("userId");
+const user = JSON.parse(localStorage.getItem("user"));
+const USER_ID = user ? user.user_id : null;
 const form = document.querySelector("form");
 const cancelBtn = document.getElementById("cancelBtn");
 const notificationContainer = document.getElementById("notificationContainer");
