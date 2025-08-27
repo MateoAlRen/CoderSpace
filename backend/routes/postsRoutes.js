@@ -52,6 +52,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/postdata", async (req, res) => {
+  try {
+    const connection = await conectarDB();
+    const [rows] = await connection.execute("SELECT * FROM posts_data ORDER BY created_at DESC");
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("There`s an error in the server:", error);
+    res.status(500).json({ mensaje: "There`s an error in the server" });
+  }
+});
+
 // Get a post by id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;

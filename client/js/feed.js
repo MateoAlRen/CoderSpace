@@ -1,8 +1,10 @@
 let userData = JSON.parse(localStorage.getItem("user"));
 
-if (!userData){
-    window.location.href = "../index.html"
+if (!userData) {
+    window.location.href = "../index.html";
 }
+
+// 🌙 Toggle dark mode
 const darkToggle = document.getElementById('darkToggle');
 
 function toggleTheme() {
@@ -19,9 +21,9 @@ function toggleTheme() {
         localStorage.setItem('theme', 'dark');
     }
 }
-
 darkToggle.addEventListener('click', toggleTheme);
 
+// 📝 Modal de nuevo post
 const modal = document.getElementById('newPostModal');
 const openBtn = document.getElementById('newPostBtn');
 const closeBtn = document.getElementById('closeModalBtn');
@@ -30,12 +32,20 @@ const backdrop = document.getElementById('modalBackdrop');
 
 function openModal() {
     modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Evita scroll del fondo
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
     modal.classList.add('hidden');
-    document.body.style.overflow = 'auto'; // Restaura el scroll
+    document.body.style.overflow = 'auto';
+    // Limpiar formulario al cerrar
+    clearForm();
+}
+
+function clearForm() {
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postDescription').value = '';
+    document.getElementById('codeFragment').value = '';
 }
 
 openBtn.addEventListener('click', openModal);
@@ -43,31 +53,209 @@ closeBtn.addEventListener('click', closeModal);
 cancelBtn.addEventListener('click', closeModal);
 backdrop.addEventListener('click', closeModal);
 
+// ⚠️ Funciones para modales de estado
+function mostrarModal() {
+    // Cerrar modal principal temporalmente para mostrar el modal de error
+    modal.classList.add('hidden');
+    document.getElementById('errorModal').classList.remove('hidden');
+}
+
+  function cerrarSuccessModal() {
+    const successModal = document.getElementById('successModal');
+    successModal.classList.add('hidden'); // Oculta el modal
+    location.reload(); // Recarga la página
+  }
+
+function mostrarFailModal() {
+    // Cerrar modal principal temporalmente para mostrar el modal de fallo
+    modal.classList.add('hidden');
+    document.getElementById('failModal').classList.remove('hidden');
+}
+
+function cerrarFailModal() {
+    document.getElementById('failModal').classList.add('hidden');
+    // Reabrir modal principal para que el usuario pueda reintentar
+    modal.classList.remove('hidden');
+}
+
+function mostrarSuccessModal() {
+    // Cerrar modal principal permanentemente en caso de éxito
+    modal.classList.add('hidden');
+    document.getElementById('successModal').classList.remove('hidden');
+}
+
+function cerrarSuccessModal() {
+    document.getElementById('successModal').classList.add('hidden');
+    // Restaurar scroll del body y limpiar formulario
+    document.body.style.overflow = 'auto';
+    clearForm();
+}
+
+// Cerrar modales con Escape - jerarquía correcta
 document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        closeModal();
+    if (e.key === 'Escape') {
+        // Prioridad: primero los modales secundarios, luego el principal
+        if (!document.getElementById('successModal').classList.contains('hidden')) {
+            cerrarSuccessModal();
+        } else if (!document.getElementById('errorModal').classList.contains('hidden')) {
+            cerrarModal();
+        } else if (!document.getElementById('failModal').classList.contains('hidden')) {
+            cerrarFailModal();
+        } else if (!modal.classList.contains('hidden')) {
+            closeModal();
+        }
     }
 });
 
+// 🚪 Logout
 let logOut = document.getElementById("logoutBtn");
-
-logOut.addEventListener("click", (e) =>{
+logOut.addEventListener("click", (e) => {
     e.preventDefault();
     localStorage.removeItem("user");
-})
+    window.location.href = "../index.html";
+});
 
-
+// 👤 Render user
 async function renderUser() {
     document.getElementById("userPfp").innerHTML = `
-        <img src="${userData.user_photo}" alt="img"  class="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 hover:scale-105 transition-transform bg-cover bg-center">
-    `
-
-    document.getElementById("userName").innerHTML =`
+        <div class="h-10 w-10 rounded-full bg-center bg-cover" style="background-image: url('${userData.user_photo || "../assets/img/default.jpeg"}')"></div>
+    `;
+    document.getElementById("userName").innerHTML = `
         <span>${userData.first_name}</span>
-    `
-};
-
+    `;
+}
 renderUser();
 
+// 📤 Publicar post
+let publishCode = document.getElementById("publishBtn");
 
+publishCode.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    let title = document.getElementById("postTitle").value.trim();
+    let description = document.getElementById("postDescription").value.trim();
+    let code = document.getElementById("codeFragment").value.trim();
+
+    if (!title || !description) {
+        alert('Por favor completa título y descripción');
+        return;
+    }
+
+    let userId = userData.user_id;
+    let post = {
+        user_id: userId,
+        post_title: title,
+        post_description: description,
+        post_code: code
+    };
+
+    addPost(post);
+});
+
+// 🔗 Enviar post al backend
+async function addPost(post) {
+    try {
+        const res = await fetch("http://localhost:3000/post", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(post)
+        });
+
+        if (!res.ok) {
+            if (res.status === 400) {
+                mostrarModal();
+                console.error(`Not appropriate... ${res.status}`);
+            } else {
+                mostrarFailModal();
+                console.error(`Request failed: ${res.status}`);
+            }
+        } else {
+            mostrarSuccessModal();
+            console.log("Post created successfully ✅");
+        }
+    } catch (error) {
+        mostrarFailModal();
+        console.error(`Request error: ${error}`);
+    }
+}
+
+let loading = false;
+let allPosts = [];   // aquí guardamos todos los posts
+let currentIndex = 0; // índice de posts ya cargados
+const batchSize = 5; // cantidad de posts por scroll
+
+// función para traer todos los posts (una sola vez)
+async function fetchAllPosts() {
+  if (allPosts.length > 0) return; // ya los trajimos
+  const res = await fetch("http://localhost:3000/post/postdata");
+  allPosts = await res.json();
+}
+
+// función para renderizar los siguientes 5 posts
+async function loadPosts() {
+  if (loading) return;
+  loading = true;
+
+  await fetchAllPosts();
+
+  const container = document.getElementById("renderPosts");
+
+  // sacar los próximos 5 posts
+  const nextPosts = allPosts.slice(currentIndex, currentIndex + batchSize);
+
+  nextPosts.forEach(post => {
+    container.innerHTML += `
+      <article class="card mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
+
+        <!-- HEADER (autor + fecha) -->
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-10 w-10 rounded-full bg-center bg-cover" style="background-image: url('${post.user_photo || "../assets/img/default.jpeg"}')"></div>
+          <div>
+            <p class="font-semibold">${post.user_name}</p>
+          </div>
+        </div>
+
+        <!-- Título -->
+        <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          ${post.title}
+        </h2>
+
+        <!-- Descripción -->
+        <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+          ${post.description}
+        </p>
+
+        <!-- Código -->
+        <div class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
+          <pre><code>${post.code || ""}</code></pre>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
+          <div class="flex items-center gap-6">
+            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              👍 <span>Like</span>
+            </button>
+            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-post-id="${post.post_id}">
+              💬 <span>Comment</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
+  });
+
+  currentIndex += batchSize;
+  loading = false;
+}
+
+// cargar los primeros 5 al inicio
+loadPosts();
+
+// evento scroll para cargar más
+window.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+    loadPosts();
+  }
+});
 
