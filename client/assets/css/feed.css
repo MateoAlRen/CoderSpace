@@ -1,0 +1,40 @@
+    @keyframes ripple {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgb(243 244 246);
+    }
+    
+    .dark ::-webkit-scrollbar-track {
+      background: rgb(17 24 39);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgb(156 163 175);
+      border-radius: 3px;
+    }
+    
+    .dark ::-webkit-scrollbar-thumb {
+      background: rgb(75 85 99);
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgb(107 114 128);
+    }
+    
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: rgb(107 114 128);
+    }
