@@ -1,4 +1,12 @@
-document.getElementById("year").textContent = new Date().getFullYear();
+document.addEventListener("DOMContentLoaded", () => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    window.location.href = "../views/feed.html";
+  } else {
+    document.getElementById("appBody").classList.remove("hidden");
+  }
+});
+
 const toggle = document.getElementById("dark-toggle");
 const root = document.documentElement;
 if (
@@ -22,37 +30,44 @@ toggle.addEventListener("click", () => {
 toggle.textContent = root.classList.contains("dark") ? "☀️" : "🌙";
 
 const LOGIN_URL = "http://localhost:3000/users";
-const form = document.getElementById("formLogin");
+const form = document.getElementById("logIn");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
+let loginStatus = document.getElementById("status");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const userEmail = email.value;
-  const userPassword = password.value;
-
-  if (!userEmail || !userPassword) {
-    alert("Fill in all fields");
+  if (!email.value || !password.value) {
+    loginStatus.innerHTML = `<span style="color: rgba(255, 0, 0, 0.555);">Complete all the fields!</span>`;
     return;
   }
 
-  try {
-    const res = await fetch(LOGIN_URL);
-    const user = await res.json();
+  userConfirm(email.value, password.value);
+});
 
-    const validation = user.find(
-      (e) => e.user_email == userEmail && e.user_password == userPassword
-    );
+// This function will check if the user exists in the database
+async function userConfirm(email, password) {
+  try {
+    const response = await fetch(LOGIN_URL, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    let data = await response.json();
+    let validation = data.find(user => user.user_email === email && user.user_password === password);
 
     if (validation) {
-      localStorage.setItem("userId", JSON.stringify(validation));
-      alert("Welcome");
+      localStorage.setItem("user", JSON.stringify(validation));
+      loginStatus.innerHTML = `<span style="color: rgba(255, 255, 255, 0.555);">Welcome back, ${validation.first_name}!</span>`;
+      setTimeout(() => {
+        window.location.href = "../views/feed.html";
+      }, 3000);
     } else {
-      alert("Incorrect credentials");
+      loginStatus.innerHTML = `<span style="color: rgba(255, 0, 0, 0.555);">The email or the password are incorrect!</span>`;
     }
   } catch (error) {
-    alert("Server error")
+    console.error(`Your petition has a problem: ${error}`);
   }
-  form.reset();
-});
+}
+
