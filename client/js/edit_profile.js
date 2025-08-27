@@ -1,7 +1,29 @@
 const API_URL = "http://localhost:3000/users";
-const USER_ID = localStorage.getItem("userId");
+const USER_ID = 8; //localStorage.getItem("userId");
 const form = document.querySelector("form");
 const cancelBtn = document.getElementById("cancelBtn");
+const notificationContainer = document.getElementById("notificationContainer");
+
+
+
+function showNotification(message, type) {
+
+  const notification = document.createElement('div');
+  
+  const baseClasses = "p-4 rounded-lg text-white font-bold opacity-90 transition-opacity duration-500 shadow-lg";
+  const successClasses = "bg-green-500";
+  const errorClasses = "bg-red-500";
+  
+  notification.className = `${baseClasses} ${type === 'success' ? successClasses : errorClasses}`;
+  notification.textContent = message;
+
+ 
+  notificationContainer.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
 
 
 async function loadUserData() {
@@ -25,7 +47,7 @@ async function loadUserData() {
     document.getElementById("description").value = user.user_description || "";
   } catch (err) {
     console.error(err);
-    alert("❌ No se pudo cargar la información del usuario");
+    showNotification("❌ No se pudo cargar la información del usuario", "error")
   }
 }
 
@@ -61,11 +83,11 @@ form.addEventListener("submit", async function (event) {
     if (!response.ok) throw new Error("Error al actualizar");
 
     const updatedUser = await response.json();
-    alert("✅ Perfil actualizado correctamente");
+    showNotification("✅ Perfil actualizado correctamente", "success")
     console.log("Usuario actualizado:", updatedUser);
   } catch (error) {
     console.error(error);
-    alert("❌ No se pudo guardar el perfil");
+    showNotification("❌ No se pudo guardar el perfil", "error")
   }
 });
 
