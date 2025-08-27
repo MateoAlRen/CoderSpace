@@ -48,18 +48,17 @@
         <!-- Search Bar -->
         <a href="./profile.html">
           <div style="padding-top: 0.2rem; margin: 0; padding-left: 10rem;" id="userPfp">
-          <img src="../assets/img/default.jpeg" alt="img"  class="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 hover:scale-105 transition-transform bg-cover bg-center">
-        </div>
+            <img src="../assets/img/default.jpeg" alt="img"
+              class="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 hover:scale-105 transition-transform bg-cover bg-center">
+          </div>
         </a>
-         
-          <div
+
+        <div
           class="hidden sm:flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-700 px-3 py-1.5 bg-white dark:bg-gray-900 transition-all hover:border-indigo-400 dark:hover:border-indigo-400">
           <div id="userName">
-              <span>Mateo</span>
+            <span>Mateo</span>
           </div>
         </div>
-        
-        
 
         <button id="darkToggle"
           class="px-3 py-2 rounded-xl text-sm font-medium border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
@@ -147,6 +146,10 @@
         </button>
       </section>
 
+      <div id="renderPosts">
+        <article
+        class="card rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
+
 
       <article id="posts"
   class="card rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
@@ -168,11 +171,21 @@
   <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
     Este es un post donde hablo sobre mi experiencia con inteligencia artificial y cómo está cambiando el mundo.
   </p>
+=======
+        <!-- HEADER (autor + fecha) -->
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600"></div>
+          <div>
+            <p class="font-semibold">Autor del Post</p>
+          </div>
+        </div>
 
-  <!-- Código -->
-  <div class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
-    <pre><code>console.log('Hola, mundo!');</code></pre>
-  </div>
+
+        <!-- Título -->
+        <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          la ia revoluciona
+        </h2>
+
 
   <!-- Footer -->
   <div
@@ -214,6 +227,33 @@
 </dialog>
 
 
+        <!-- Descripción -->
+        <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+          Este es un post donde hablo sobre mi experiencia con inteligencia artificial y cómo está cambiando el mundo.
+        </p>
+
+        <!-- Código -->
+        <div
+          class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
+          <pre><code>console.log('Hola, mundo!');</code></pre>
+        </div>
+
+
+        <!-- Footer -->
+        <div
+          class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
+          <div class="flex items-center gap-6">
+            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              👍 <span>Like</span>
+            </button>
+            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              💬 <span>Comment</span>
+            </button>
+          </div>
+        </div>
+      </article>
+      </div>
+      
     </main>
 
     <!-- RIGHT SIDEBAR -->
@@ -245,7 +285,7 @@
             <div class="flex items-start gap-3">
               <div
                 class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
-                N</div>
+                </div>
               <div class="flex-1">
                 <p class="font-medium group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   Node.js Microservices</p>
@@ -283,8 +323,10 @@
     </aside>
   </div>
 
-  <!-- NEW POST MODAL -->
-  <div id="newPostModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+  <!-- ========== MODALES (ORGANIZADOS POR Z-INDEX) ========== -->
+
+  <!-- MODAL PRINCIPAL: NEW POST (z-40) -->
+  <div id="newPostModal" class="fixed inset-0 z-40 hidden overflow-y-auto">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity" id="modalBackdrop"></div>
 
@@ -347,6 +389,152 @@
           <button id="publishBtn"
             class="px-8 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 transition-all hover:shadow-lg transform hover:scale-105 font-semibold">
             Publicar Post
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONTENIDO BLOQUEADO (z-60) -->
+  <div id="errorModal" class="fixed inset-0 z-60 hidden overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Modal Content -->
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg transform transition-all overflow-hidden">
+        
+        <!-- Header with gradient -->
+        <div class="bg-gradient-to-br from-red-500 to-red-600 px-6 py-8 text-center text-white">
+          <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
+            🚫
+          </div>
+          <h2 class="text-2xl font-bold mb-2">Content Blocked</h2>
+          <p class="text-red-50 opacity-90 text-sm">Your post could not be published</p>
+        </div>
+
+        <!-- Body -->
+        <div class="p-8 space-y-6">
+          <!-- Error message -->
+          <div class="bg-red-50 dark:bg-red-950 border-l-4 border-red-500 p-4 rounded-lg">
+            <h3 class="text-red-700 dark:text-red-300 font-semibold mb-2">Inappropriate Content Detected</h3>
+            <p class="text-red-600 dark:text-red-400 text-sm leading-relaxed">
+              Our automated content moderation system has flagged your post as potentially inappropriate or violating our community guidelines.
+            </p>
+          </div>
+
+          <!-- Reasons -->
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-3">This could be due to:</h4>
+            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 text-sm leading-relaxed space-y-1">
+              <li>Offensive or inappropriate language</li>
+              <li>Spam or promotional content</li>
+              <li>Violation of community standards</li>
+              <li>Malicious code or security risks</li>
+            </ul>
+          </div>
+
+          <!-- What to do section -->
+          <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
+            <div class="flex items-start gap-3">
+              <span class="text-blue-500 text-xl">💡</span>
+              <div>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-1 text-sm">What can you do?</h4>
+                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed">
+                  Review your content, remove any inappropriate material, and try posting again. If you believe this is an error, please contact our support team.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="flex gap-3">
+            <button onclick="cerrarModal()"
+              class="flex-1 px-6 py-3 rounded-xl bg-gray-500 text-white hover:bg-gray-600 transition-colors font-semibold text-sm">
+              Close
+            </button>
+            <button onclick="cerrarModal()"
+              class="flex-1 px-6 py-3 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors font-semibold text-sm">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE FALLO DE PUBLICACIÓN (z-60) -->
+  <div id="failModal" class="fixed inset-0 z-60 hidden overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Modal Content -->
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm transform transition-all text-center p-8">
+        
+        <div class="text-5xl mb-4">❌</div>
+
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
+          Publication Failed
+        </h3>
+
+        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">
+          Sorry, we couldn't publish your post. Please check your connection and try again.
+        </p>
+
+        <button onclick="cerrarFailModal()"
+          class="px-8 py-3 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors font-semibold text-sm">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE ÉXITO (z-60) -->
+  <div id="successModal" class="fixed inset-0 z-60 hidden overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Modal Content -->
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg transform transition-all overflow-hidden">
+        
+        <!-- Header with gradient -->
+        <div class="bg-gradient-to-br from-emerald-500 to-green-600 px-6 py-8 text-center text-white">
+          <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
+            ✅
+          </div>
+          <h2 class="text-2xl font-bold mb-2">Post Published!</h2>
+          <p class="text-emerald-50 opacity-90">Your content is now live</p>
+        </div>
+
+        <!-- Body -->
+        <div class="p-8 space-y-6">
+          <!-- Success message -->
+          <div class="bg-emerald-50 dark:bg-emerald-950 border-l-4 border-emerald-500 p-4 rounded-lg">
+            <h3 class="text-emerald-700 dark:text-emerald-300 font-semibold mb-2">Successfully Created</h3>
+            <p class="text-emerald-600 dark:text-emerald-400 text-sm leading-relaxed">
+              Your post has been published and is now visible to the CoderSpace community.
+            </p>
+          </div>
+
+          <!-- What's next section -->
+          <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
+            <div class="flex items-start gap-3">
+              <span class="text-indigo-500 text-xl">🚀</span>
+              <div>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-1">What's next?</h4>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  Share your post with friends, engage with comments, and watch your project gain traction in the community.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action button -->
+          <button onclick="cerrarSuccessModal()"
+            class="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 transition-all hover:shadow-lg transform hover:scale-105 font-semibold">
+            Awesome!
           </button>
         </div>
       </div>
