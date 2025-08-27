@@ -1,13 +1,13 @@
 const API_URL = "http://localhost:3000/users";
-const user = JSON.parse(localStorage.getItem("user"));
-const USER_ID = user ? user.user_id : null;
+let userData = JSON.parse(localStorage.getItem("user")); 
+const USER_ID = userData.user_id
 
-const profileImage = document.getElementById("profileImage");
-const profileName = document.getElementById("profileName");
-const profileDescription = document.getElementById("profileDescription");
-const githubLink = document.getElementById("githubLink");
-const linkedinLink = document.getElementById("linkedinLink");
-const userAlias = document.getElementById("userAlias");
+const profileImage = userData.user_photo;
+const profileName = userData.firstName;
+const profileDescription = userData.user_description;
+const githubLink = userData.user_github;
+const linkedinLink = userData.user_linkedin;
+const userAlias = userData.userAlias;
 const notificationContainer = document.getElementById("notificationContainer");
 
 
