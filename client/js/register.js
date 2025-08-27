@@ -1,4 +1,13 @@
-document.getElementById("year").textContent = new Date().getFullYear();
+document.addEventListener("DOMContentLoaded", () => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    window.location.href = "../views/feed.html";
+  } else {
+    document.getElementById("appBody").classList.remove("hidden");
+  }
+});
+
+
 const toggle = document.getElementById("dark-toggle");
 const root = document.documentElement;
 if (
@@ -21,12 +30,12 @@ toggle.addEventListener("click", () => {
 
 toggle.textContent = root.classList.contains("dark") ? "☀️" : "🌙";
 
-const REGISTER_URL = "http://localhost:3000/users";
 const form = document.getElementById("registerForm");
 const first_name = document.getElementById("name");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const passwordConfirm = document.getElementById("passwordConfirm");
+let signStatus = document.getElementById("status");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -37,12 +46,12 @@ form.addEventListener("submit", async (e) => {
   const userPasswordConfirm = passwordConfirm.value;
 
   if (!userName || !userEmail || !userPassword || !userPasswordConfirm) {
-    alert("Fill in all fields");
+    signStatus.innerHTML = `<span style="color: rgba(255, 0, 0, 0.555);">Complete all the fields!</span>`;
     return;
   }
 
   if (userPasswordConfirm != userPassword) {
-    alert("Enter the same password");
+    signStatus.innerHTML = `<span style="color: rgba(255, 0, 0, 0.555);">The passwords are not the same!</span>`;
     return;
   }
 
@@ -52,17 +61,32 @@ form.addEventListener("submit", async (e) => {
     user_password: userPassword,
   };
 
-  try {
-    const res = await fetch(REGISTER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser),
-    });
-    console.log("Success registering user");
-    alert("Success registering user");
-  } catch (error) {
-    console.log("Error registering user");
-    alert("Error registering user");
-  }
+  postUser(newUser)
+
+
   form.reset();
 });
+async function postUser(userData) {
+  try {
+    const res = await fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+    if (!res.ok) {
+      if (res.status === 400) {
+        console.error(`Some of your fields break our community rules: ${res.status}`);
+        signStatus.innerHTML = `<span style="color: rgba(255, 0, 0, 0.555);">Some of your fields break the community rules...</span>`;
+      } else {
+        console.error(`There's an error in the server`);
+      }
+    } else {
+      localStorage.setItem("user", JSON.stringify(userData))
+      window.location.href = "../views/feed.html";
+    }
+    
+
+  } catch (error) {
+    console.error(`Your petition has a problem: ${error}`);
+  }
+}
