@@ -1,9 +1,9 @@
-import express from 'express';
-import { conectarDB } from '../db/db.js';
+import express from "express";
+import { conectarDB } from "../db/db.js";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPEN_AI_APIKEY
+  apiKey: process.env.OPEN_AI_APIKEY,
 });
 
 const moderationPrompt = `
@@ -40,134 +40,167 @@ const router = express.Router();
 
 // Post
 // Get all posts
-router.get('/', async (req, res) => {
-    try {
-        const connection = await conectarDB();
-        const [rows] = await connection.execute('SELECT * FROM post');
-        await connection.end();
-        res.json(rows);
-    } catch (error) {
-        console.error('There`s an error in the server:', error);
-        res.status(500).json({ mensaje: 'There`s an error in the server' });
-
-    }
+router.get("/", async (req, res) => {
+  try {
+    const connection = await conectarDB();
+    const [rows] = await connection.execute("SELECT * FROM post");
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("There`s an error in the server:", error);
+    res.status(500).json({ mensaje: "There`s an error in the server" });
+  }
 });
 
 // Get a post by id
-router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const connection = await conectarDB();
-        const query = ('SELECT * FROM post WHERE post_id = ?');
-        const [rows] = await connection.execute(query, [id]);
-        await connection.end();
-        res.json(rows);
-    } catch (error) {
-        console.error('Server error', error);
-        res.status(500).json({ mensaje: "Server error" });
-    }
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const connection = await conectarDB();
+    const query = ("SELECT * FROM post WHERE post_id = ?");
+    const [rows] = await connection.execute(query, [id]);
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("Server error", error);
+    res.status(500).json({ mensaje: "Server error" });
+  }
 });
 
+// Get post depending on a user
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const connection = await conectarDB();
+    const query = `
+      SELECT u.user_id, u.first_name, u.first_lastname, 
+             p.post_title, p.post_description, p.post_code, p.created_at
+      FROM post p
+      JOIN users u ON p.user_id = u.user_id
+      WHERE u.user_id = ?
+      ORDER BY u.first_name, u.first_lastname;
+    `;
+    const [rows] = await connection.execute(query, [id]);
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("Server error", error);
+    res.status(500).json({ mensaje: "Server error" });
+  }
+});
+
+
 // Create post
-router.post('/', async (req, res) => {
-    const { user_id , post_title , post_description, post_code } = req.body;
+router.post("/", async (req, res) => {
+  const { user_id, post_title, post_description, post_code } = req.body;
 
-    try {
-        const connection = await conectarDB();
+  try {
+    const connection = await conectarDB();
 
-         const postData = {
-            user_id,
-            post_title, 
-            post_description, 
-            post_code
-        };
+    const postData = {
+      user_id,
+      post_title,
+      post_description,
+      post_code,
+    };
 
-        const postDataJson = JSON.stringify(postData, null, 2);
-        const completion = await openai.chat.completions.create({
-                model: "gpt-4o-mini",
-                messages: [
-                    { role: "system", content: moderationPrompt },
-                    { role: "user", content: postDataJson }, 
-                ],
-            });
+    const postDataJson = JSON.stringify(postData, null, 2);
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: moderationPrompt },
+        { role: "user", content: postDataJson },
+      ],
+    });
 
-            const decision = completion.choices[0].message.content;
+    const decision = completion.choices[0].message.content;
 
-            if (decision === "RECHAZADO") {
-                return res.status(400).json({
-                    ok: false,
-                    message: "El contenido fue rechazado por el sistema de moderación IA",
-                });
-            }
-
-
-        const query = ('INSERT INTO post (user_id, post_title, post_description, post_code) VALUES (?, ?, ?, ?)');
-        const [rows] = await connection.execute(query, [ user_id, post_title, post_description, post_code ]);
-        await connection.end();
-        res.status(201).json({ mensaje: "Post created succesfully" });
-    } catch (error) {
-        console.error('There`s an error in the server:', error);
-        res.status(500).json({ mensaje: 'There`s an error in the server' });
+    if (decision === "RECHAZADO") {
+      return res.status(400).json({
+        ok: false,
+        message: "El contenido fue rechazado por el sistema de moderación IA",
+      });
     }
+
+    const query =
+      "INSERT INTO post (user_id, post_title, post_description, post_code) VALUES (?, ?, ?, ?)";
+    const [rows] = await connection.execute(query, [
+      user_id,
+      post_title,
+      post_description,
+      post_code,
+    ]);
+    await connection.end();
+    res.status(201).json({ mensaje: "Post created succesfully" });
+  } catch (error) {
+    console.error("There`s an error in the server:", error);
+    res.status(500).json({ mensaje: "There`s an error in the server" });
+  }
 });
 
 // Update post
-router.put('/:id', async (req, res) => {
-    const { id } = req.params;
-    const { user_id, post_title, post_description, post_code } = req.body;
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { user_id, post_title, post_description, post_code } = req.body;
 
-    try {
-        const connection = await conectarDB();
+  try {
+    const connection = await conectarDB();
 
-        const postData = {
-            user_id,
-            post_title, 
-            post_description, 
-            post_code
-        };
+    const postData = {
+      user_id,
+      post_title,
+      post_description,
+      post_code,
+    };
 
-        const postDataJson = JSON.stringify(postData, null, 2);
-        const completion = await openai.chat.completions.create({
-                model: "gpt-4o-mini",
-                messages: [
-                    { role: "system", content: moderationPrompt },
-                    { role: "user", content: postDataJson }, 
-                ],
-            });
+    const postDataJson = JSON.stringify(postData, null, 2);
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: moderationPrompt },
+        { role: "user", content: postDataJson },
+      ],
+    });
 
-            const decision = completion.choices[0].message.content;
+    const decision = completion.choices[0].message.content;
 
-            if (decision === "RECHAZADO") {
-                return res.status(400).json({
-                    ok: false,
-                    message: "El contenido fue rechazado por el sistema de moderación IA",
-                });
-            }
-
-        const query = ('UPDATE post SET user_id = ?, post_title = ?, post_description = ?, post_code = ? WHERE post_id = ?');
-        const [rows] = await connection.execute(query, [ user_id, post_title, post_description, post_code, id]);
-        await connection.end();
-        res.status(200).json({ mensaje: 'Post updated successfully' });
-    } catch (error) {
-        console.error('There`s an error in the server:', error);
-        res.status(500).json({ mensaje: 'There`s an error in the server' });
-
+    if (decision === "RECHAZADO") {
+      return res.status(400).json({
+        ok: false,
+        message: "El contenido fue rechazado por el sistema de moderación IA",
+      });
     }
+
+    const query =
+      "UPDATE post SET user_id = ?, post_title = ?, post_description = ?, post_code = ? WHERE post_id = ?";
+    const [rows] = await connection.execute(query, [
+      user_id,
+      post_title,
+      post_description,
+      post_code,
+      id,
+    ]);
+    await connection.end();
+    res.status(200).json({ mensaje: "Post updated successfully" });
+  } catch (error) {
+    console.error("There`s an error in the server:", error);
+    res.status(500).json({ mensaje: "There`s an error in the server" });
+  }
 });
 
 // Delete post
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const connection = await conectarDB();
-        const query = 'DELETE FROM post WHERE post_id = ?';
-        const [rows] = await connection.execute(query, [id]);
-        await connection.end();
-        res.status(200).json({ mensaje: "Post deleted successfully." });
-    } catch (error) {
-        console.error("There`s an error in the server:", error);
-        res.status(500).json({ mensaje:'There`s an error in the server' });
-    }
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const connection = await conectarDB();
+    const query = "DELETE FROM post WHERE post_id = ?";
+    const [rows] = await connection.execute(query, [id]);
+    await connection.end();
+    res.status(200).json({ mensaje: "Post deleted successfully." });
+  } catch (error) {
+    console.error("There`s an error in the server:", error);
+    res.status(500).json({ mensaje: "There`s an error in the server" });
+  }
 });
 
 export default router;
