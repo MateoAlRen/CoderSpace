@@ -116,5 +116,21 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+
+// Comments filtered by post_id
+router.get('/post/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const connection = await conectarDB();
+        const query = ('SELECT * FROM commentary WHERE post_id = ?');
+        const [rows] = await connection.execute(query, [id]);
+        await connection.end();
+        res.json(rows);
+    } catch (error) {
+        console.error('Server error', error);
+        res.status(500).json({ mensaje: "Server error" });
+    }
+});
+
 export default router;
 

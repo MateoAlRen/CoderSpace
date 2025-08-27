@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import usersRoutes from './routes/usersRoutes.js';
 import postsRoutes from './routes/postsRoutes.js';
 import commentarysRoutes from './routes/commentsRoutes.js';
+import likesRoutes from './routes/likesRouter.js'
 
 // load variables .env file
 dotenv.config();
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use('/users', usersRoutes);
 app.use('/post', postsRoutes);
 app.use('/commentary', commentarysRoutes);
+app.use('/likes', likesRoutes);
 
 
 // start the server
