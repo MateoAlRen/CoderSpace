@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:3000/users";
-const USER_ID = 8; // localStorage.getItem("userId");
+const USER_ID = 1; // localStorage.getItem("userId");
 
 const profileImage = document.getElementById("profileImage");
 const profileName = document.getElementById("profileName");
@@ -222,7 +222,7 @@ async function renderPosts(posts) {
 
 async function loadUserPosts() {
   try {
-    const res = await fetch(`${API_POSTS_URL}/${USER_ID}`); 
+    const res = await fetch(`${API_POSTS_URL}/user/${USER_ID}`); 
     if (!res.ok) {
       throw new Error("Error al obtener las publicaciones del usuario");
     }

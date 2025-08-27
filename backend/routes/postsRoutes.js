@@ -68,17 +68,12 @@ router.get("/:id", async (req, res) => {
 });
 
 // Get post depending on a user
-router.get("/:id", async (req, res) => {
+router.get("/user/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const connection = await conectarDB();
     const query = `
-      SELECT u.user_id, u.first_name, u.first_lastname, 
-             p.post_title, p.post_description, p.post_code, p.created_at
-      FROM post p
-      JOIN users u ON p.user_id = u.user_id
-      WHERE u.user_id = ?
-      ORDER BY u.first_name, u.first_lastname;
+      SELECT * FROM post WHERE user_id = ?
     `;
     const [rows] = await connection.execute(query, [id]);
     await connection.end();
