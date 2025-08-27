@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script>
+    (() => {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="flex bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 p-6 hidden md:flex flex-col space-y-8">
+    <h1 class="text-2xl font-bold">CoderSpace Admin </h1>
+    <nav class="flex flex-col gap-4 mt-4">
+      <a href="./feedAdminUser.html" class="flex items-center gap-2 hover:text-indigo-600">
+        <span>Usuarios</span> 
+      </a>
+      <a href="./feedAdminPost.html" class="flex items-center gap-2 hover:text-indigo-600">
+        <span>Posts</span> 
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col">
+    <header class="h-16 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-6 flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Panel Admin</h2>
+      <button id="darkToggle" class="px-3 py-2 border rounded-xl text-sm dark:border-gray-600 bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        🌙
+      </button>
+    </header>
+
+    <main class="p-6 space-y-10">
+      <!-- Usuarios -->
+      <section>
+        <h3 class="text-2xl font-bold mb-4">Usuarios</h3>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div class="user-card bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow space-y-4" data-id="1" data-name="Alice Smith" data-email="alice@example.com">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-rose-600"></div>
+              <div>
+                <h4 class="font-semibold text-lg">Alice Smith</h4>
+                <p class="text-sm text-gray-500 dark:text-gray-400">alice@example.com</p>
+              </div>
+            </div>
+            <div class="flex justify-end gap-3">
+              <button class="btn-edit px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-xl text-sm hover:scale-105 transition">Editar</button>
+              <button class="btn-delete px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-xl text-sm hover:scale-105 transition">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+    </main>
+  </div>
+
+  <!-- Modal Eliminar -->
+  <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-sm space-y-4 m-auto">
+      <h3 class="text-lg font-bold">¿Eliminar este elemento?</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300">Esta acción no se puede deshacer.</p>
+      <div class="flex justify-end gap-3">
+        <button class="btn-cancel px-4 py-2 rounded-xl border">Cancelar</button>
+        <button class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar -->
+  <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-md space-y-4 m-auto">
+      <h3 class="text-lg font-bold">Editar Elemento</h3>
+      <form class="space-y-4">
+        <input id="editName" type="text" placeholder="Nombre o Título" class="w-full p-2 border rounded dark:bg-gray-900 dark:border-gray-600">
+        <input id="editExtra" type="text" placeholder="Email o Autor" class="w-full p-2 border rounded dark:bg-gray-900 dark:border-gray-600">
+        <div class="flex justify-end gap-3">
+          <button type="button" class="btn-cancel-edit px-4 py-2 rounded-xl border">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    document.getElementById('darkToggle').addEventListener('click', () => {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      document.getElementById('darkToggle').textContent = html.classList.contains('dark') ? '☀️' : '🌙';
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Modal control
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    // Botones eliminar
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openModal('deleteModal');
+      });
+    });
+
+    document.querySelectorAll('.btn-cancel').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeModal('deleteModal');
+      });
+    });
+
+    document.querySelectorAll('.btn-cancel-edit').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeModal('editModal');
+      });
+    });
+  
+    // Botones editar
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.user-card') || btn.closest('.post-card');
+        const name = card.dataset.name || card.dataset.title;
+        const extra = card.dataset.email || card.dataset.author;
+
+        document.getElementById('editName').value = name;
+        document.getElementById('editExtra').value = extra;
+
+        openModal('editModal');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script>
+    (() => {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="flex bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 p-6 hidden md:flex flex-col space-y-8">
+    <h1 class="text-2xl font-bold">CoderSpace Admin</h1>
+    <nav class="flex flex-col gap-4 mt-4">
+      <a href="./feedAdminUser.html" class="flex items-center gap-2 hover:text-indigo-600">
+        <span>Usuarios</span> 
+      </a>
+      <a href="./feedAdminPost.html" class="flex items-center gap-2 hover:text-indigo-600">
+        <span>Posts</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col">
+    <header class="h-16 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-6 flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Panel Admin</h2>
+      <button id="darkToggle" class="px-3 py-2 border rounded-xl text-sm dark:border-gray-600 bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        🌙
+      </button>
+    </header>
+
+    <main class="p-6 space-y-10">
+      
+
+      <!-- Posts -->
+      <section>
+        <h3 class="text-2xl font-bold mb-4">Posts</h3>
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="post-card bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow space-y-4" data-id="10" data-title="Proyecto JS Colaborativo" data-author="Alice">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600"></div>
+              <div>
+                <h4 class="font-semibold">Proyecto JS Colaborativo</h4>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Publicado por Alice</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Editor de código colaborativo en tiempo real con sockets.
+            </p>
+            <div class="flex justify-end gap-3">
+              <button class="btn-edit px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-xl text-sm hover:scale-105 transition">Editar</button>
+              <button class="btn-delete-post px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-xl text-sm hover:scale-105 transition">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Eliminar -->
+  <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-sm space-y-4 m-auto">
+      <h3 class="text-lg font-bold">¿Eliminar este elemento?</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300">Esta acción no se puede deshacer.</p>
+      <div class="flex justify-end gap-3">
+        <button class="btn-cancel px-4 py-2 rounded-xl border">Cancelar</button>
+        <button class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- NEW POST MODAL -->
+  <div id="editModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity" id="modalBackdrop"></div>
+    
+    <!-- Modal Content -->
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-2xl transform transition-all">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Crear Nuevo Post</h2>
+          <button 
+            id="closeModalBtn" 
+            class="btn-delete p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6 space-y-6">
+          <!-- Title Input -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Título del Post
+            </label>
+            <input 
+              type="text" 
+              id="postTitle"
+              placeholder="Ingresa el título de tu post..."
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+            >
+          </div>
+          
+          <!-- Description Input -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Descripción
+            </label>
+            <textarea 
+              id="postDescription"
+              rows="4" 
+              placeholder="Describe tu proyecto, logro o experiencia..."
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-y transition-all"
+            ></textarea>
+          </div>
+          
+          <!-- Code Fragment Input -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Fragmento de Código (Opcional)
+            </label>
+            <div class="relative">
+              <textarea 
+                id="codeFragment"
+                rows="6" 
+                placeholder="// Pega aquí tu fragmento de código&#10;function ejemplo() {&#10;  return 'Hola mundo!';&#10;}"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-y transition-all font-mono text-sm"
+              ></textarea>
+              <div class="absolute top-3 right-3 text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                CODE
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+          <button 
+            id="cancelBtn"
+            class="btn-delete px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+          >
+            Cancelar
+          </button>
+          <button 
+            id="publishBtn"
+            class="px-8 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 transition-all hover:shadow-lg transform hover:scale-105 font-semibold"
+          >
+            Publicar Post
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    document.getElementById('darkToggle').addEventListener('click', () => {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      document.getElementById('darkToggle').textContent = html.classList.contains('dark') ? '☀️' : '🌙';
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Modal control
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    // Botones eliminar
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeModal('editModal');
+      });
+    });
+
+    document.querySelectorAll('.btn-delete-post').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openModal('deleteModal');
+      });
+    });
+
+    document.querySelectorAll('.btn-cancel').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeModal('deleteModal');
+      });
+    });
+    
+    // Botones editar
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.addEventListener('click', () => {
+          openModal('editModal');
+        const card = btn.closest('.user-card') || btn.closest('.post-card');
+        const name = card.dataset.name || card.dataset.title;
+        const extra = card.dataset.email || card.dataset.author;
+
+        document.getElementById('editName').value = name;
+        document.getElementById('editExtra').value = extra;
+        
+      });
+    });
+  </script>
+</body>
+</html>
