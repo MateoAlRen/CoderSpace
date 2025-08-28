@@ -76,7 +76,7 @@
       </div>
     </nav>
   </header>
-
+  <!--Try-->
   <!-- MAIN LAYOUT -->
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
 
@@ -147,114 +147,39 @@
       </section>
 
       <div id="renderPosts">
-        <article
-        class="card rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
 
 
-      <article id="posts"
-  class="card rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
-  
-  <!-- HEADER (autor + fecha) -->
-  <div class="flex items-center gap-3 mb-4">
-    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600"></div>
-    <div>
-      <p class="font-semibold">Autor del Post</p>
-    </div>
-  </div>
 
-  <!-- Título -->
-  <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-    la ia revoluciona
-  </h2>
-
-  <!-- Descripción -->
-  <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-    Este es un post donde hablo sobre mi experiencia con inteligencia artificial y cómo está cambiando el mundo.
-  </p>
-=======
-        <!-- HEADER (autor + fecha) -->
-        <div class="flex items-center gap-3 mb-4">
-          <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600"></div>
-          <div>
-            <p class="font-semibold">Autor del Post</p>
-          </div>
-        </div>
-
-
-        <!-- Título -->
-        <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-          la ia revoluciona
-        </h2>
-
-
-  <!-- Footer -->
-  <div
-    class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
-    <div class="flex items-center gap-6">
-      <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-        👍 <span>Like</span>
-      </button>
-      <button class="comment-button flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-post-id="4">
-        💬 <span>Comment</span>
-      </button>
-    </div>
-  </div>
-</article>
-
-<dialog id="commentModal"  class="hidden w-full max-w-2xl h-5/6 p-8 rounded-2xl shadow-2xl backdrop:bg-black backdrop:opacity-70 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col">
-  
-  <div class="flex justify-between items-center mb-6 pb-4">
-    <h3 class="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Comments</h3>
-    <button id="closeModalBtn" class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 transition-colors p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-  </div>
-  
-  <div id="commentsContainer" class="flex-grow flex flex-col gap-4 overflow-y-auto mb-6 py-2">
-    <!-- The comments will be loaded here -->
-  </div>
-
-  <form id="newCommentForm" class="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700 pb-0">
-    <textarea id="newCommentInput" placeholder="Write your comment..." rows="1" class="flex-grow resize-none p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"></textarea>
-    <button type="submit" class="shrink-0 p-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl shadow-lg hover:from-indigo-600 hover:to-indigo-700 transition-all transform hover:scale-105">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-      </svg>
-    </button>
-  </form>
-</dialog>
-
-
-        <!-- Descripción -->
-        <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-          Este es un post donde hablo sobre mi experiencia con inteligencia artificial y cómo está cambiando el mundo.
-        </p>
-
-        <!-- Código -->
-        <div
-          class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
-          <pre><code>console.log('Hola, mundo!');</code></pre>
-        </div>
-
-
-        <!-- Footer -->
-        <div
-          class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
-          <div class="flex items-center gap-6">
-            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-              👍 <span>Like</span>
-            </button>
-            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-              💬 <span>Comment</span>
-            </button>
-          </div>
-        </div>
-      </article>
       </div>
-      
+
     </main>
+    <dialog id="commentModal" class="hidden w-full max-w-2xl h-5/6 p-8 rounded-2xl shadow-2xl backdrop:bg-black backdrop:opacity-70 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col">
+
+      <div class="flex justify-between items-center mb-6 pb-4">
+        <h3 class="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Comments</h3>
+        <button id="closeCommentsBtn"
+          class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 transition-colors p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div id="commentsContainer" class="flex-grow flex flex-col gap-4 overflow-y-auto mb-6 py-2">
+        <!-- The comments will be loaded here -->
+      </div>
+
+      <form id="newCommentForm" class="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700 pb-0">
+        <textarea id="newCommentInput" placeholder="Write your comment..." rows="1"
+          class="flex-grow resize-none p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"></textarea>
+        <button type="submit"
+          class="shrink-0 p-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl shadow-lg hover:from-indigo-600 hover:to-indigo-700 transition-all transform hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+          </svg>
+        </button>
+      </form>
+    </dialog>
 
     <!-- RIGHT SIDEBAR -->
     <aside class="hidden md:block md:col-span-4 space-y-6">
@@ -285,7 +210,7 @@
             <div class="flex items-start gap-3">
               <div
                 class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
-                </div>
+              </div>
               <div class="flex-1">
                 <p class="font-medium group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   Node.js Microservices</p>
@@ -402,11 +327,13 @@
 
     <!-- Modal Content -->
     <div class="flex min-h-screen items-center justify-center p-4">
-      <div class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg transform transition-all overflow-hidden">
-        
+      <div
+        class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg transform transition-all overflow-hidden">
+
         <!-- Header with gradient -->
         <div class="bg-gradient-to-br from-red-500 to-red-600 px-6 py-8 text-center text-white">
-          <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
+          <div
+            class="w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
             🚫
           </div>
           <h2 class="text-2xl font-bold mb-2">Content Blocked</h2>
@@ -419,7 +346,8 @@
           <div class="bg-red-50 dark:bg-red-950 border-l-4 border-red-500 p-4 rounded-lg">
             <h3 class="text-red-700 dark:text-red-300 font-semibold mb-2">Inappropriate Content Detected</h3>
             <p class="text-red-600 dark:text-red-400 text-sm leading-relaxed">
-              Our automated content moderation system has flagged your post as potentially inappropriate or violating our community guidelines.
+              Our automated content moderation system has flagged your post as potentially inappropriate or violating
+              our community guidelines.
             </p>
           </div>
 
@@ -441,7 +369,8 @@
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-1 text-sm">What can you do?</h4>
                 <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed">
-                  Review your content, remove any inappropriate material, and try posting again. If you believe this is an error, please contact our support team.
+                  Review your content, remove any inappropriate material, and try posting again. If you believe this is
+                  an error, please contact our support team.
                 </p>
               </div>
             </div>
@@ -470,8 +399,9 @@
 
     <!-- Modal Content -->
     <div class="flex min-h-screen items-center justify-center p-4">
-      <div class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm transform transition-all text-center p-8">
-        
+      <div
+        class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm transform transition-all text-center p-8">
+
         <div class="text-5xl mb-4">❌</div>
 
         <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
@@ -497,11 +427,13 @@
 
     <!-- Modal Content -->
     <div class="flex min-h-screen items-center justify-center p-4">
-      <div class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg transform transition-all overflow-hidden">
-        
+      <div
+        class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg transform transition-all overflow-hidden">
+
         <!-- Header with gradient -->
         <div class="bg-gradient-to-br from-emerald-500 to-green-600 px-6 py-8 text-center text-white">
-          <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
+          <div
+            class="w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
             ✅
           </div>
           <h2 class="text-2xl font-bold mb-2">Post Published!</h2>
@@ -525,7 +457,8 @@
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-1">What's next?</h4>
                 <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                  Share your post with friends, engage with comments, and watch your project gain traction in the community.
+                  Share your post with friends, engage with comments, and watch your project gain traction in the
+                  community.
                 </p>
               </div>
             </div>

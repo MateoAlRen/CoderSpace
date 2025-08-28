@@ -196,6 +196,69 @@ async function loadPosts() {
   if (loading) return;
   loading = true;
 
+  await fetchAllPosts();
+
+  const container = document.getElementById("renderPosts");
+
+  // sacar los próximos 5 posts
+  const nextPosts = allPosts.slice(currentIndex, currentIndex + batchSize);
+
+  nextPosts.forEach(post => {
+    container.innerHTML += `
+      <article class="card mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
+
+        <!-- HEADER (autor + fecha) -->
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-10 w-10 rounded-full bg-center bg-cover" style="background-image: url('${post.user_photo || "../assets/img/default.jpeg"}')"></div>
+          <div>
+            <p class="font-semibold">${post.user_name}</p>
+          </div>
+        </div>
+
+        <!-- Título -->
+        <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          ${post.title}
+        </h2>
+
+        <!-- Descripción -->
+        <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+          ${post.description}
+        </p>
+
+        <!-- Código -->
+        <div class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
+          <pre><code>${post.code || ""}</code></pre>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
+          <div class="flex items-center gap-6">
+            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              👍 <span>Like</span>
+            </button>
+            <button class="comment-button flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-post-id="${post.post_id}">
+              💬 <span>Comment</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
+    
+  });
+
+  currentIndex += batchSize;
+  loading = false;
+}
+
+// cargar los primeros 5 al inicio
+loadPosts();
+
+// evento scroll para cargar más
+window.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+    loadPosts();
+  }
+});
 
 const API_COMMENTS_URL = "http://localhost:3000/commentary";
 const API_USERS_URL = "http://localhost:3000/users";
@@ -203,7 +266,7 @@ const USER_ID = userData ? userData.user_id : null;
 
 //Elements of the DOM of the comments modal
 const commentModal = document.getElementById("commentModal");
-const closeModalBtn = document.getElementById("closeModalBtn");
+const closeCommentsBtn = document.getElementById("closeCommentsBtn");
 const commentsContainer = document.getElementById("commentsContainer");
 const newCommentForm = document.getElementById("newCommentForm");
 const newCommentInput = document.getElementById("newCommentInput");
@@ -284,77 +347,11 @@ async function renderComments(postId) {
     const commentElement = createCommentElement(comment, userFirstName);
     commentsContainer.appendChild(commentElement);
   });
-}
-
-
-
-
-  await fetchAllPosts();
-
-  const container = document.getElementById("renderPosts");
-
-  // sacar los próximos 5 posts
-  const nextPosts = allPosts.slice(currentIndex, currentIndex + batchSize);
-
-  nextPosts.forEach(post => {
-    container.innerHTML += `
-      <article class="card mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
-
-        <!-- HEADER (autor + fecha) -->
-        <div class="flex items-center gap-3 mb-4">
-          <div class="h-10 w-10 rounded-full bg-center bg-cover" style="background-image: url('${post.user_photo || "../assets/img/default.jpeg"}')"></div>
-          <div>
-            <p class="font-semibold">${post.user_name}</p>
-          </div>
-        </div>
-
-        <!-- Título -->
-        <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-          ${post.title}
-        </h2>
-
-        <!-- Descripción -->
-        <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-          ${post.description}
-        </p>
-
-        <!-- Código -->
-        <div class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
-          <pre><code>${post.code || ""}</code></pre>
-        </div>
-
-        <!-- Footer -->
-        <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
-          <div class="flex items-center gap-6">
-            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-              👍 <span>Like</span>
-            </button>
-            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-post-id="${post.post_id}">
-              💬 <span>Comment</span>
-            </button>
-          </div>
-        </div>
-      </article>
-    `;
-  });
-
-  currentIndex += batchSize;
-  loading = false;
-}
-
-// cargar los primeros 5 al inicio
-loadPosts();
-
-// evento scroll para cargar más
-window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-    loadPosts();
-  }
-});
+};
 
 
 // Event to close the modal
-closeModalBtn.addEventListener('click', () => {
+closeCommentsBtn.addEventListener('click', () => {
   commentModal.close();
   commentModal.classList.add("hidden");
 });
@@ -419,3 +416,4 @@ document.addEventListener('click', (event) => {
     }
   }
 });
+
