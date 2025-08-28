@@ -41,7 +41,7 @@ async function loadUserProfile() {
     const user = data[0];
 
 
-    const defaultIMG = "../../../assets/default.jpg";
+    const defaultIMG = ".././assets/img/default.jpeg";
     if (profileImage) {
       if (user.user_photo) {
         profileImage.src = user.user_photo;

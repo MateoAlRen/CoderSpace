@@ -1,5 +1,6 @@
 let userData = JSON.parse(localStorage.getItem("user"));
 
+
 if (!userData) {
     window.location.href = "../index.html";
 }
@@ -60,11 +61,11 @@ function mostrarModal() {
     document.getElementById('errorModal').classList.remove('hidden');
 }
 
-  function cerrarSuccessModal() {
-    const successModal = document.getElementById('successModal');
-    successModal.classList.add('hidden'); // Oculta el modal
-    location.reload(); // Recarga la página
-  }
+function cerrarSuccessModal() {
+  const successModal = document.getElementById('successModal');
+  successModal.classList.add('hidden'); // Oculta el modal
+  location.reload(); // Recarga la página
+}
 
 function mostrarFailModal() {
     // Cerrar modal principal temporalmente para mostrar el modal de fallo
@@ -191,7 +192,13 @@ async function fetchAllPosts() {
   allPosts = await res.json();
 }
 
+
+const API_LIKES_URL = "http://localhost:3000/likes";
+const API_COMMENTS_URL = "http://localhost:3000/commentary";
+const API_USERS_URL = "http://localhost:3000/users";
+const USER_ID = userData ? userData.user_id : null;
 // función para renderizar los siguientes 5 posts
+
 async function loadPosts() {
   if (loading) return;
   loading = true;
@@ -203,7 +210,22 @@ async function loadPosts() {
   // sacar los próximos 5 posts
   const nextPosts = allPosts.slice(currentIndex, currentIndex + batchSize);
 
-  nextPosts.forEach(post => {
+  nextPosts.forEach(async post => {
+
+      // Traer todos los likes del post
+    const resLikesCount = await fetch(`${API_LIKES_URL}/post/${post.post_id}/count`);
+    const likesCountData = await resLikesCount.ok ? await resLikesCount.json() : { like_count: 0 };
+
+   // Obtener solo el total de comentarios
+    const resCommentsCount = await fetch(`${API_COMMENTS_URL}/post/${post.post_id}/count`);
+    const commentsCountData = await resCommentsCount.ok ? await resCommentsCount.json() : { comment_count: 0 };
+    
+
+    // Si el usuario actual ya le dio like
+    const resLikes = await fetch(`${API_LIKES_URL}/post/${post.post_id}`);
+    const likes = await resLikes.ok ? await resLikes.json() : [];
+    const userLike = likes.find(like => like.user_id === USER_ID);
+
     container.innerHTML += `
       <article class="card mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
 
@@ -233,11 +255,15 @@ async function loadPosts() {
         <!-- Footer -->
         <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
           <div class="flex items-center gap-6">
-            <button class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-              👍 <span>Like</span>
-            </button>
+          <button class="like-btn flex items-center gap-1 transition-colors"  
+                  data-post-id="${post.post_id}"
+                  data-liked="${!!userLike}"
+                  ${userLike ? `data-like-id="${userLike.like_id}"` : ""}>
+            <span class="like-emoji ${userLike ? "text-indigo-600 dark:text-indigo-400" : ""}">👍</span>
+            <span class="like-count">${likesCountData.like_count}</span> Likes
+          </button>
             <button class="comment-button flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-post-id="${post.post_id}">
-              💬 <span>Comment</span>
+              💬 <span class="comment-count">${commentsCountData.comment_count}</span> Comment
             </button>
           </div>
         </div>
@@ -259,10 +285,6 @@ window.addEventListener("scroll", () => {
     loadPosts();
   }
 });
-
-const API_COMMENTS_URL = "http://localhost:3000/commentary";
-const API_USERS_URL = "http://localhost:3000/users";
-const USER_ID = userData ? userData.user_id : null;
 
 //Elements of the DOM of the comments modal
 const commentModal = document.getElementById("commentModal");
@@ -370,9 +392,7 @@ newCommentForm.addEventListener('submit', async (e) => {
   try {
     const res = await fetch(`${API_COMMENTS_URL}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         comment_description: commentText,
         user_id: USER_ID,
@@ -386,9 +406,9 @@ newCommentForm.addEventListener('submit', async (e) => {
     const userFirstName = user ? user.first_name : 'Usuario Anónimo';
     
     const newComment = {
-        comment_description: commentText,
-        user_id: USER_ID,
-        post_id: currentPostId
+      comment_description: commentText,
+      user_id: USER_ID,
+      post_id: currentPostId
     };
 
     const newCommentElement = createCommentElement(newComment, userFirstName);
@@ -397,12 +417,20 @@ newCommentForm.addEventListener('submit', async (e) => {
     newCommentInput.value = '';
     resizeTextarea();
 
+    // Actualizar contador usando el endpoint de count
+    const commentBtn = document.querySelector(`.comment-button[data-post-id="${currentPostId}"]`);
+    const countEl = commentBtn.querySelector(".comment-count");
+    const countRes = await fetch(`${API_COMMENTS_URL}/post/${currentPostId}/count`);
+    const countData = await countRes.json();
+    countEl.textContent = countData.comment_count;
+
     commentsContainer.scrollTop = commentsContainer.scrollHeight;
     
   } catch (err) {
     console.error('Error sending comment:', err);
   }
 });
+
 
 // Global listener for all comment buttons.
 document.addEventListener('click', (event) => {
@@ -413,6 +441,62 @@ document.addEventListener('click', (event) => {
         commentModal.classList.remove("hidden");
         commentModal.showModal();
         renderComments(currentPostId);
+    }
+  }
+});
+
+
+// Global listener for all likes buttons.
+document.addEventListener("click", async (e) => {
+  const likeBtn = e.target.closest(".like-btn");
+  if (likeBtn) {
+    const postId = likeBtn.dataset.postId;
+    const likeCountEl = likeBtn.querySelector(".like-count");
+    let liked = likeBtn.dataset.liked === "true";
+    const likeEmoji = likeBtn.querySelector(".like-emoji");
+
+    if (!liked) {
+      // Dar like
+      try {
+        const res = await fetch(API_LIKES_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: USER_ID, post_id: postId })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          likeBtn.dataset.liked = "true";
+          likeBtn.dataset.likeId = data.likeId || "";
+
+           // O usar el endpoint de count
+          const countRes = await fetch(`${API_LIKES_URL}/post/${postId}/count`);
+          const countData = await countRes.json();
+          likeCountEl.textContent = countData.like_count;
+
+          likeEmoji.classList.add("text-indigo-600", "dark:text-indigo-400"); // Cambia solo el emoji
+        }
+      } catch (err) {
+        console.error("Error adding like:", err);
+      }
+    } else {
+      // Quitar like
+      const likeId = likeBtn.dataset.likeId;
+      try {
+        const res = await fetch(`${API_LIKES_URL}/${likeId}`, { method: "DELETE" });
+        if (res.ok) {
+          // Obtener el total actualizado de likes
+          const countRes = await fetch(`${API_LIKES_URL}/post/${postId}/count`);
+          const countData = await countRes.json();
+          likeCountEl.textContent = countData.like_count; // ✅ contador actualizado
+
+          likeBtn.dataset.liked = "false";
+          likeBtn.removeAttribute("data-like-id");
+          likeEmoji.classList.remove("text-indigo-600", "dark:text-indigo-400"); // Quita el color
+        }
+      } catch (err) {
+        console.error("Error deleting like:", err);
+      }
     }
   }
 });
