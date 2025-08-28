@@ -376,12 +376,8 @@
             </div>
           </div>
 
-          <!-- Action buttons -->
+          <!-- Action button -->
           <div class="flex gap-3">
-            <button onclick="cerrarModal()"
-              class="flex-1 px-6 py-3 rounded-xl bg-gray-500 text-white hover:bg-gray-600 transition-colors font-semibold text-sm">
-              Close
-            </button>
             <button onclick="cerrarModal()"
               class="flex-1 px-6 py-3 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors font-semibold text-sm">
               Try Again
@@ -421,6 +417,64 @@
   </div>
 
   <!-- MODAL DE ÉXITO (z-60) -->
+  <!-- MODAL DE CONTENIDO BLOQUEADO EN COMENTARIOS (z-60) -->
+  <div id="comentarioErrorModal" class="fixed inset-0 z-60 hidden overflow-y-auto">
+    <div class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"></div>
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg transform transition-all overflow-hidden">
+        <div class="bg-gradient-to-br from-red-500 to-red-600 px-6 py-8 text-center text-white">
+          <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">🚫</div>
+          <h2 class="text-2xl font-bold mb-2">Comment Blocked</h2>
+          <p class="text-red-50 opacity-90 text-sm">Your comment could not be published</p>
+        </div>
+        <div class="p-8 space-y-6">
+          <div class="bg-red-50 dark:bg-red-950 border-l-4 border-red-500 p-4 rounded-lg">
+            <h3 class="text-red-700 dark:text-red-300 font-semibold mb-2">Inappropriate Content Detected</h3>
+            <p class="text-red-600 dark:text-red-400 text-sm leading-relaxed">
+              Our automated content moderation system has flagged your comment as potentially inappropriate or violating our community guidelines.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-3">This could be due to:</h4>
+            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 text-sm leading-relaxed space-y-1">
+              <li>Offensive or inappropriate language</li>
+              <li>Spam or promotional content</li>
+              <li>Violation of community standards</li>
+              <li>Malicious code or security risks</li>
+            </ul>
+          </div>
+          <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
+            <div class="flex items-start gap-3">
+              <span class="text-blue-500 text-xl">💡</span>
+              <div>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-1 text-sm">What can you do?</h4>
+                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed">
+                  Review your comment, remove any inappropriate material, and try posting again. If you believe this is an error, please contact our support team.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <!-- Only close option, no Try Again -->
+            <button onclick="cerrarComentarioErrorModal()" class="flex-1 px-6 py-3 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors font-semibold text-sm">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE FALLO DE PUBLICACIÓN DE COMENTARIO (z-60) -->
+  <div id="comentarioFailModal" class="fixed inset-0 z-60 hidden overflow-y-auto">
+    <div class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"></div>
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm transform transition-all text-center p-8">
+        <div class="text-5xl mb-4">❌</div>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">Comment Failed</h3>
+        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">Sorry, we couldn't publish your comment. Please check your connection and try again.</p>
+        <button onclick="cerrarComentarioFailModal()" class="px-8 py-3 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors font-semibold text-sm">OK</button>
+      </div>
+    </div>
+  </div>
   <div id="successModal" class="fixed inset-0 z-60 hidden overflow-y-auto">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"></div>

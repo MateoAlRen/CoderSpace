@@ -1,3 +1,102 @@
+// --- COMMENT MODALS LOGIC ---
+
+// Show comment error modal (content moderation)
+// Hide comment modal and show error modal above (z-60)
+function mostrarComentarioModal() {
+    // Cierra el <dialog> nativo para eliminar el backdrop
+    if (typeof commentModal.close === 'function') {
+        commentModal.close();
+    }
+    commentModal.classList.add('hidden');
+    document.getElementById('comentarioErrorModal').classList.remove('hidden');
+    // Solo un modal visible a la vez
+}
+
+// Show comment fail modal (DB/network error)
+// Hide comment modal and show fail modal above (z-60)
+function mostrarComentarioFailModal() {
+    commentModal.classList.add('hidden');
+    document.getElementById('comentarioFailModal').classList.remove('hidden');
+    // Only one modal visible at a time for stacking context
+}
+
+// Close comment error modal (no Try Again, just close)
+window.cerrarComentarioErrorModal = function() {
+    // Oculta el modal y el backdrop correctamente para permitir click inmediato en Close
+    const errorModal = document.getElementById('comentarioErrorModal');
+    if (errorModal) {
+        errorModal.classList.add('hidden');
+        // Oculta backdrop solo en este modal, restaurando display y clases
+        const backdrop = errorModal.querySelector('.fixed.inset-0');
+        if (backdrop) {
+            backdrop.classList.add('hidden');
+            backdrop.style.display = 'none';
+        }
+    }
+    document.body.style.overflow = 'auto';
+
+    // Reabrir el <dialog> nativo y enfocar el textarea
+    if (commentModal) {
+        commentModal.classList.remove('hidden');
+        if (typeof commentModal.showModal === 'function') {
+            commentModal.showModal();
+        }
+        setTimeout(() => {
+            if (newCommentInput) {
+                newCommentInput.focus();
+                commentModal.scrollTop = 0;
+            }
+        }, 100);
+    }
+};
+
+// Close comment fail modal and reopen comment modal
+window.cerrarComentarioFailModal = function() {
+    // Hide fail modal and its backdrop
+    const failModal = document.getElementById('comentarioFailModal');
+    failModal.classList.add('hidden');
+    const failBackdrop = failModal.querySelector('.fixed.inset-0');
+    if (failBackdrop) failBackdrop.classList.add('hidden');
+
+    // Reopen comment modal and block scroll
+    if (typeof commentModal.showModal === 'function') {
+        if (!commentModal.open) {
+            commentModal.classList.remove('hidden');
+            commentModal.showModal();
+        }
+        document.body.style.overflow = 'hidden';
+    } else {
+        commentModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    // Focus textarea and scroll modal to top
+    setTimeout(() => {
+        if (newCommentInput) {
+            newCommentInput.focus();
+            commentModal.scrollTop = 0;
+        }
+    }, 100);
+};
+// Pantalla de carga visual
+function showLoader() {
+  let loader = document.getElementById('loader');
+  if (!loader) {
+    loader = document.createElement('div');
+    loader.id = 'loader';
+    loader.className = 'fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80';
+    loader.innerHTML = `
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600 border-b-4 border-purple-600"></div>
+      <span class="ml-6 text-xl font-bold text-indigo-600 dark:text-purple-400">Cargando...</span>
+    `;
+    document.body.appendChild(loader);
+  }
+  loader.classList.remove('hidden');
+}
+
+function hideLoader() {
+  const loader = document.getElementById('loader');
+  if (loader) loader.classList.add('hidden');
+}
 let userData = JSON.parse(localStorage.getItem("user"));
 
 
@@ -25,11 +124,11 @@ function toggleTheme() {
 darkToggle.addEventListener('click', toggleTheme);
 
 // 📝 Modal de nuevo post
-const modal = document.getElementById('newPostModal');
-const openBtn = document.getElementById('newPostBtn');
-const closeBtn = document.getElementById('closeModalBtn');
-const cancelBtn = document.getElementById('cancelBtn');
-const backdrop = document.getElementById('modalBackdrop');
+var modal = document.getElementById('newPostModal');
+var openBtn = document.getElementById('newPostBtn');
+var closeBtn = document.getElementById('closeModalBtn');
+var cancelBtn = document.getElementById('cancelBtn');
+var backdrop = document.getElementById('modalBackdrop');
 
 function openModal() {
     modal.classList.remove('hidden');
@@ -54,6 +153,25 @@ closeBtn.addEventListener('click', closeModal);
 cancelBtn.addEventListener('click', closeModal);
 backdrop.addEventListener('click', closeModal);
 
+// Hacer globales las funciones para el HTML
+window.cerrarModal = function() {
+    document.getElementById('errorModal').classList.add('hidden');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+};
+window.cerrarFailModal = function() {
+    document.getElementById('failModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    // Reabrir modal principal para que el usuario pueda reintentar
+    modal.classList.remove('hidden');
+};
+window.cerrarSuccessModal = function() {
+    const successModal = document.getElementById('successModal');
+    successModal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    location.reload();
+};
+
 // ⚠️ Funciones para modales de estado
 function mostrarModal() {
     // Cerrar modal principal temporalmente para mostrar el modal de error
@@ -61,22 +179,10 @@ function mostrarModal() {
     document.getElementById('errorModal').classList.remove('hidden');
 }
 
-function cerrarSuccessModal() {
-  const successModal = document.getElementById('successModal');
-  successModal.classList.add('hidden'); // Oculta el modal
-  location.reload(); // Recarga la página
-}
-
 function mostrarFailModal() {
     // Cerrar modal principal temporalmente para mostrar el modal de fallo
     modal.classList.add('hidden');
     document.getElementById('failModal').classList.remove('hidden');
-}
-
-function cerrarFailModal() {
-    document.getElementById('failModal').classList.add('hidden');
-    // Reabrir modal principal para que el usuario pueda reintentar
-    modal.classList.remove('hidden');
 }
 
 function mostrarSuccessModal() {
@@ -195,28 +301,25 @@ const USER_ID = userData ? userData.user_id : null;
 async function loadPosts() {
   if (loading) return;
   loading = true;
+  showLoader();
 
   await fetchAllPosts();
 
   const container = document.getElementById("renderPosts");
-
-  // sacar los próximos 5 posts
   const nextPosts = allPosts.slice(currentIndex, currentIndex + batchSize);
 
-  nextPosts.forEach(async post => {
-
-      // Traer todos los likes del post
+  for (const post of nextPosts) {
+    // Traer todos los likes del post
     const resLikesCount = await fetch(`${API_LIKES_URL}/post/${post.post_id}/count`);
-    const likesCountData = await resLikesCount.ok ? await resLikesCount.json() : { like_count: 0 };
+    const likesCountData = resLikesCount.ok ? await resLikesCount.json() : { like_count: 0 };
 
-   // Obtener solo el total de comentarios
+    // Obtener solo el total de comentarios
     const resCommentsCount = await fetch(`${API_COMMENTS_URL}/post/${post.post_id}/count`);
-    const commentsCountData = await resCommentsCount.ok ? await resCommentsCount.json() : { comment_count: 0 };
-    
+    const commentsCountData = resCommentsCount.ok ? await resCommentsCount.json() : { comment_count: 0 };
 
     // Si el usuario actual ya le dio like
     const resLikes = await fetch(`${API_LIKES_URL}/post/${post.post_id}`);
-    const likes = await resLikes.ok ? await resLikes.json() : [];
+    const likes = resLikes.ok ? await resLikes.json() : [];
     const userLike = likes.find(like => like.user_id === USER_ID);
 
     container.innerHTML += `
@@ -262,11 +365,11 @@ async function loadPosts() {
         </div>
       </article>
     `;
-    
-  });
+  }
 
   currentIndex += batchSize;
   loading = false;
+  hideLoader();
 }
 
 // cargar los primeros 5 al inicio
@@ -378,10 +481,9 @@ newCommentForm.addEventListener('submit', async (e) => {
   if (commentText === '') return;
 
   if (!currentPostId || !USER_ID) {
-    console.error('Error: Post ID o User ID no están definidos.');
+    console.error('Error: Post ID or User ID are not defined.');
     return;
   }
-  
   try {
     const res = await fetch(`${API_COMMENTS_URL}`, {
       method: 'POST',
@@ -393,33 +495,37 @@ newCommentForm.addEventListener('submit', async (e) => {
       })
     });
 
-    if (!res.ok) throw new Error("Error sending the comment");
-    
+    if (!res.ok) {
+      if (res.status === 400) {
+        mostrarComentarioModal();
+        console.error(`Comment not appropriate... ${res.status}`);
+      } else {
+        mostrarComentarioFailModal();
+        console.error(`Database error: ${res.status}`);
+      }
+      return;
+    }
+
     const user = await fetchUserById(USER_ID);
     const userFirstName = user ? user.first_name : 'Usuario Anónimo';
-    
     const newComment = {
       comment_description: commentText,
       user_id: USER_ID,
       post_id: currentPostId
     };
-
     const newCommentElement = createCommentElement(newComment, userFirstName);
     commentsContainer.appendChild(newCommentElement);
-    
     newCommentInput.value = '';
     resizeTextarea();
-
     // Actualizar contador usando el endpoint de count
     const commentBtn = document.querySelector(`.comment-button[data-post-id="${currentPostId}"]`);
     const countEl = commentBtn.querySelector(".comment-count");
     const countRes = await fetch(`${API_COMMENTS_URL}/post/${currentPostId}/count`);
     const countData = await countRes.json();
     countEl.textContent = countData.comment_count;
-
     commentsContainer.scrollTop = commentsContainer.scrollHeight;
-    
   } catch (err) {
+    mostrarComentarioFailModal();
     console.error('Error sending comment:', err);
   }
 });
