@@ -38,3 +38,25 @@
     .dark ::-webkit-scrollbar-thumb:hover {
       background: rgb(107 114 128);
     }
+
+    
+    li:first-child span:nth-of-type(3) {
+      background-color: #ff0000;
+      color: #ffffff; 
+      position: relative;
+      color: transparent; 
+    }
+
+
+    li:first-child span:nth-of-type(3)::after {
+      content: "Top Trending"; 
+      position: absolute;
+      text-align: center;
+      top: 0;
+      left: 0;
+      color: #ffffff;
+      font-size: 0.75rem; 
+      padding: 0 0.7rem;
+      background-color: #ff0000;
+      border-radius: 0.25rem;
+    }
