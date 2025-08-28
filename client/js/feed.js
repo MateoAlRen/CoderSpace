@@ -85,13 +85,6 @@ function mostrarSuccessModal() {
     document.getElementById('successModal').classList.remove('hidden');
 }
 
-function cerrarSuccessModal() {
-    document.getElementById('successModal').classList.add('hidden');
-    // Restaurar scroll del body y limpiar formulario
-    document.body.style.overflow = 'auto';
-    clearForm();
-}
-
 // Cerrar modales con Escape - jerarquía correcta
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
@@ -107,6 +100,7 @@ document.addEventListener('keydown', function (e) {
         }
     }
 });
+
 
 // 🚪 Logout
 let logOut = document.getElementById("logoutBtn");
@@ -192,6 +186,58 @@ async function fetchAllPosts() {
   allPosts = await res.json();
 }
 
+async function renderTopTrending() {
+  const sidebarList = document.querySelector('aside ul'); // tu <ul> del sidebar
+
+  // Traer likes y comentarios de cada post
+  const postsWithData = await Promise.all(
+    allPosts.map(async post => {
+      const resLikes = await fetch(`${API_LIKES_URL}/post/${post.post_id}/count`);
+      const likesData = resLikes.ok ? await resLikes.json() : { like_count: 0 };
+
+      const resComments = await fetch(`${API_COMMENTS_URL}/post/${post.post_id}/count`);
+      const commentsData = resComments.ok ? await resComments.json() : { comment_count: 0 };
+
+      return { ...post, like_count: likesData.like_count, comment_count: commentsData.comment_count };
+    })
+  );
+
+  // Ordenar por likes descendente
+  postsWithData.sort((a, b) => b.like_count - a.like_count);
+
+  // Tomar top 3
+  const top3 = postsWithData.slice(0, 3);
+
+  // Limpiar <ul> antes de pintar
+  sidebarList.innerHTML = '';
+
+  // Pintar cada post
+  top3.forEach(post => {
+    const li = document.createElement('li');
+    li.classList.add('group', 'cursor-pointer');
+    li.innerHTML = `
+      <div class="flex items-start gap-3">
+        <div class="w-12 h-12 rounded-full bg-center bg-cover flex-shrink-0" 
+             style="background-image: url('${post.user_photo || "../assets/img/default.jpeg"}')">
+        </div>
+        <div class="flex-1">
+          <p class="font-medium group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            ${post.post_title}
+          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">${post.post_description}</p>
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <span>⭐ ${post.like_count}</span>
+            <span>💬 ${post.comment_count}</span>
+            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">Trending</span>
+          </div>
+        </div>
+      </div>
+    `;
+    sidebarList.appendChild(li);
+  });
+}
+
+
 
 const API_LIKES_URL = "http://localhost:3000/likes";
 const API_COMMENTS_URL = "http://localhost:3000/commentary";
@@ -203,7 +249,7 @@ async function loadPosts() {
   if (loading) return;
   loading = true;
 
-  await fetchAllPosts();
+  await fetchAllPosts()
 
   const container = document.getElementById("renderPosts");
 
