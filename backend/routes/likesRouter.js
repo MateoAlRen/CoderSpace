@@ -35,6 +35,33 @@ router.post('/', async (req, res) => {
 });
 
 
+// Obtener el total de likes de un post
+router.get("/post/:id/count", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const connection = await conectarDB();
+
+        // Contar cuántos likes tiene ese post
+        const [rows] = await connection.execute(
+            "SELECT COUNT(*) AS like_count FROM likes WHERE post_id = ?",
+            [id]
+        );
+
+        await connection.end();
+
+        res.status(200).json({ 
+            post_id: id, 
+            like_count: rows[0].like_count 
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: "Error al obtener contador de likes" });
+    }
+});
+
+
+
 // Delete like
 router.delete('/:likeId', async (req, res) => {
     const { likeId } = req.params;

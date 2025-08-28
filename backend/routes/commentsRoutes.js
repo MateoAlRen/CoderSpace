@@ -53,6 +53,35 @@ router.get('/', async (req, res) => {
     }
 });
 
+
+// Obtener el total de comentarios de un post
+router.get("/post/:id/count", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const connection = await conectarDB();
+
+        // Contar cuántos comentarios tiene ese post
+        const [rows] = await connection.execute(
+            "SELECT COUNT(*) AS comment_count FROM commentary WHERE post_id = ?",
+            [id]
+        );
+
+        await connection.end();
+
+        res.status(200).json({ 
+            post_id: id, 
+            comment_count: rows[0].comment_count 
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: "Error al obtener contador de comentarios" });
+    }
+});
+
+
+
+
 // Comments filtered by post_id
 router.get('/post/:id', async (req, res) => {
     const { id } = req.params;
