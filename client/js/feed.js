@@ -85,13 +85,6 @@ function mostrarSuccessModal() {
     document.getElementById('successModal').classList.remove('hidden');
 }
 
-function cerrarSuccessModal() {
-    document.getElementById('successModal').classList.add('hidden');
-    // Restaurar scroll del body y limpiar formulario
-    document.body.style.overflow = 'auto';
-    clearForm();
-}
-
 // Cerrar modales con Escape - jerarquía correcta
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {

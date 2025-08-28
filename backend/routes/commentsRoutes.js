@@ -112,12 +112,30 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Create comment
 router.post('/', async (req, res) => {
     const { comment_description, user_id, post_id } = req.body;
 
     try {
         const connection = await conectarDB();
+
+
+        const completion = await openai.chat.completions.create({
+                model: "gpt-4o-mini",
+                messages: [
+                    { role: "system", content: moderationPrompt },
+                    { role: "user", content: comment_description }, 
+                ],
+            });
+
+            const decision = completion.choices[0].message.content;
+
+            if (decision === "RECHAZADO") {
+                return res.status(400).json({
+                    ok: false,
+                    message: "El contenido fue rechazado por el sistema de moderación IA",
+                });
+            }
+
         const query = ('INSERT INTO commentary (comment_description, user_id, post_id) VALUES (?, ?, ?)');
         const [rows] = await connection.execute(query, [ comment_description, user_id, post_id ]);
         await connection.end();
@@ -127,7 +145,6 @@ router.post('/', async (req, res) => {
         res.status(500).json({ mensaje: 'Server error' });
     }
 });
-
 // Update comment
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
