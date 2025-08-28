@@ -292,6 +292,58 @@ async function fetchAllPosts() {
 }
 
 
+async function renderTopTrending() {
+  const sidebarList = document.getElementById('ul_trending');
+  await fetchAllPosts(); // asegura que ya tengas los posts
+
+  // traer likes y comentarios por cada post
+  const postsWithData = await Promise.all(
+    allPosts.map(async post => {
+      const resLikes = await fetch(`${API_LIKES_URL}/post/${post.post_id}/count`);
+      const likesData = resLikes.ok ? await resLikes.json() : { like_count: 0 };
+
+      const resComments = await fetch(`${API_COMMENTS_URL}/post/${post.post_id}/count`);
+      const commentsData = resComments.ok ? await resComments.json() : { comment_count: 0 };
+
+      return {
+        ...post,
+        like_count: likesData.like_count,
+        comment_count: commentsData.comment_count
+      };
+    })
+  );
+
+  // ordenar y tomar top 3
+  postsWithData.sort((a, b) => b.like_count - a.like_count);
+  const top3 = postsWithData.slice(0, 3);
+
+  // limpiar y pintar
+  sidebarList.innerHTML = '';
+  top3.forEach(post => {
+    const li = document.createElement('li');
+    li.classList.add('group', 'cursor-pointer');
+    li.innerHTML = `
+      <div class="flex items-start gap-3">
+        <div class="w-12 h-12 rounded-full bg-center bg-cover flex-shrink-0" 
+             style="background-image: url('${post.user_photo || "../assets/img/default.jpeg"}')"></div>
+        <div class="flex-1">
+          <p class="font-medium group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            ${post.title}
+          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">${post.description}</p>
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <span>⭐ ${post.like_count}</span>
+            <span>💬 ${post.comment_count}</span>
+            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">Trending</span>
+          </div>
+        </div>
+      </div>
+    `;
+    sidebarList.appendChild(li);
+  });
+}
+
+
 const API_LIKES_URL = "http://localhost:3000/likes";
 const API_COMMENTS_URL = "http://localhost:3000/commentary";
 const API_USERS_URL = "http://localhost:3000/users";
@@ -370,6 +422,7 @@ async function loadPosts() {
   currentIndex += batchSize;
   loading = false;
   hideLoader();
+  renderTopTrending();
 }
 
 // cargar los primeros 5 al inicio
@@ -573,7 +626,7 @@ document.addEventListener("click", async (e) => {
           const countData = await countRes.json();
           likeCountEl.textContent = countData.like_count;
 
-          likeEmoji.classList.add("text-indigo-600", "dark:text-indigo-400"); // Cambia solo el emoji
+          likeEmoji.classList.add("text-indigo-600", "dark:text-indigo-400"); 
         }
       } catch (err) {
         console.error("Error adding like:", err);
@@ -587,7 +640,7 @@ document.addEventListener("click", async (e) => {
           // Obtener el total actualizado de likes
           const countRes = await fetch(`${API_LIKES_URL}/post/${postId}/count`);
           const countData = await countRes.json();
-          likeCountEl.textContent = countData.like_count; // ✅ contador actualizado
+          likeCountEl.textContent = countData.like_count; // contador actualizado
 
           likeBtn.dataset.liked = "false";
           likeBtn.removeAttribute("data-like-id");

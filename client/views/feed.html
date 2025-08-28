@@ -147,9 +147,6 @@
       </section>
 
       <div id="renderPosts">
-
-
-
       </div>
 
     </main>
@@ -181,71 +178,16 @@
       </form>
     </dialog>
 
-    <!-- RIGHT SIDEBAR -->
+      <!-- RIGHT SIDEBAR -->
     <aside class="hidden md:block md:col-span-4 space-y-6">
-      <!-- Suggested Projects -->
+      <!-- Trending Projects -->
       <section class="card rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
         <h3 class="font-semibold mb-4 text-lg">Trending Projects</h3>
-        <ul class="space-y-4">
-          <li class="group cursor-pointer">
-            <div class="flex items-start gap-3">
-              <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-bold text-lg">
-                R</div>
-              <div class="flex-1">
-                <p class="font-medium group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  React Dashboard</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Modern admin interface</p>
-                <div class="flex items-center gap-2 text-xs text-gray-500">
-                  <span>⭐ 124</span>
-                  <span>🍴 45</span>
-                  <span
-                    class="px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">Active</span>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li class="group cursor-pointer">
-            <div class="flex items-start gap-3">
-              <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
-              </div>
-              <div class="flex-1">
-                <p class="font-medium group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  Node.js Microservices</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Scalable backend architecture</p>
-                <div class="flex items-center gap-2 text-xs text-gray-500">
-                  <span>⭐ 89</span>
-                  <span>🍴 23</span>
-                  <span
-                    class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded">Growing</span>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li class="group cursor-pointer">
-            <div class="flex items-start gap-3">
-              <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-lg">
-                V</div>
-              <div class="flex-1">
-                <p class="font-medium group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  Vue.js E-commerce</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Complete shopping platform</p>
-                <div class="flex items-center gap-2 text-xs text-gray-500">
-                  <span>⭐ 67</span>
-                  <span>🍴 18</span>
-                  <span
-                    class="px-2 py-0.5 bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 rounded">New</span>
-                </div>
-              </div>
-            </div>
-          </li>
+        <ul id="ul_trending" class="space-y-4">
+          <!-- Aquí JS pintará dinámicamente los 3 posts con más likes -->
         </ul>
       </section>
-    </aside>
+    </aside>  
   </div>
 
   <!-- ========== MODALES (ORGANIZADOS POR Z-INDEX) ========== -->
