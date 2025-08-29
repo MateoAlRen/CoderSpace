@@ -8,6 +8,10 @@
         opacity: 0;
       }
     }
+
+    html {
+      scroll-behavior: smooth;
+    }
     
     /* Custom scrollbar */
     ::-webkit-scrollbar {
