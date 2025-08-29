@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const user = localStorage.getItem("user");
   if (user) {
     window.location.href = "../views/feed.html";
+  } else if (user.type === "admin") {
+    window.location.href = "../views/admin_post.html";
   } else {
     document.getElementById("appBody").classList.remove("hidden");
   }

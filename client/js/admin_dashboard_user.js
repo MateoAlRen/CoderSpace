@@ -1,3 +1,14 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const user = localStorage.getItem("user");
+  if (!user) {
+    window.location.href = "../views/login.html";
+  } else if (user.type === "user") {
+    window.location.href = "../views/feed.html";
+  } else {
+    document.getElementById("appBody").classList.remove("hidden");
+  }
+});
+
 const USER_URL = "http://localhost:3000/users/count";
 const Dashboard = document.getElementById("Dashboard");
 

@@ -25,7 +25,13 @@
 
 <!-- Cambiamos a h-screen overflow-hidden para bloquear el scroll global y que solo scrollee la tabla -->
 
-<body class="h-screen overflow-hidden bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+<body class="h-screen overflow-hidden bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 hidden" id="appBody">
+    <!-- Loader Tailwind -->
+    <div id="adminLoader" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600 border-b-4 border-purple-600"></div>
+      <span class="ml-6 text-xl font-bold text-indigo-600 dark:text-purple-400">Loading...</span>
+    </div>
+
     <!-- NAVIGATION HEADER -->
     <header
         class="sticky top-0 z-50 border-b border-gray-200/70 dark:border-gray-800/70 bg-white/80 dark:bg-gray-900/80 backdrop-blur">

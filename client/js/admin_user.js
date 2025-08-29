@@ -1,3 +1,22 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const user = localStorage.getItem("user");
+  if (!user) {
+    window.location.href = "../views/login.html";
+  } else if (user.type === "user") {
+    window.location.href = "../views/feed.html";
+  } else {
+    document.getElementById("appBody").classList.remove("hidden");
+  }
+});
+
+let logOut = document.getElementById("logoutBtn");
+logOut.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("user");
+    window.location.href = "../index.html";
+});
+
+
 // ========== DARK MODE ==========
 const darkToggle = document.getElementById("darkToggle");
 const root = document.documentElement;
@@ -112,12 +131,16 @@ function renderTable(data) {
 
 // ========== FETCH USERS ==========
 async function adminUser() {
+  const loader = document.getElementById('adminLoader');
+  if (loader) loader.classList.remove('hidden');
   try {
     const res = await fetch(ADMIN_USER_URL);
     users = await res.json();
     renderTable(users);
+    if (loader) loader.classList.add('hidden');
   } catch (error) {
     console.error("Error al cargar usuarios", error);
+    if (loader) loader.classList.add('hidden');
   }
 }
 
@@ -185,6 +208,7 @@ confirmDelete.addEventListener("click", async () => {
 // Close success modal
 closeSuccessModal.addEventListener("click", () => {
   successModal.classList.add("hidden");
+  location.reload();
 });
 
 // -------- UPDATE MODALS --------

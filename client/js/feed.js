@@ -1,3 +1,14 @@
+let userData = JSON.parse(localStorage.getItem("user"));
+
+
+if (userData) {
+    if (userData.type === "admin") {
+      window.location.href = "../views/admin_post.html";
+} else if (!userData){  
+  window.location.href = "../index.html";
+}}
+
+
 // --- COMMENT MODALS LOGIC ---
 
 // Show comment error modal (content moderation)
@@ -96,12 +107,6 @@ function showLoader() {
 function hideLoader() {
   const loader = document.getElementById('loader');
   if (loader) loader.classList.add('hidden');
-}
-let userData = JSON.parse(localStorage.getItem("user"));
-
-
-if (!userData) {
-    window.location.href = "../index.html";
 }
 
 // 🌙 Toggle dark mode

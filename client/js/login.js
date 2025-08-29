@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const user = localStorage.getItem("user");
   if (user) {
     window.location.href = "../views/feed.html";
+    if (user.type === "admin") {
+    window.location.href = "../views/admin_post.html"
+  }
   } else {
     document.getElementById("appBody").classList.remove("hidden");
   }
@@ -61,14 +64,13 @@ async function userConfirm(email, password) {
 
     if (validation) {
       localStorage.setItem("user", JSON.stringify(validation));
-      loginStatus.innerHTML = `<span style="color: rgba(255, 255, 255, 0.555);">Welcome back, ${validation.first_name}!</span>`;
+      loginStatus.innerHTML = `<span style="color: rgba(174, 8, 252, 0.56);">Welcome back, ${validation.first_name}!</span>`;
       setTimeout(() => {
         if (validation.type === "admin") {
-          window.location.href = "../views/admin_dashboard.html";
+          window.location.href = "../views/admin_post.html";
         } else {
           window.location.href = "../views/feed.html";
         }
-        window.location.href = "../views/feed.html";
       }, 3000);
     } else {
       loginStatus.innerHTML = `<span style="color: rgba(255, 0, 0, 0.555);">The email or the password are incorrect!</span>`;
