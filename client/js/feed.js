@@ -217,13 +217,20 @@ logOut.addEventListener("click", (e) => {
 
 // 👤 Render user
 async function renderUser() {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  
+  if (userData) {
     document.getElementById("userPfp").innerHTML = `
-        <div class="h-10 w-10 rounded-full bg-center bg-cover" style="background-image: url('${userData.user_photo || "../assets/img/default.jpeg"}')"></div>
+      <div class="h-10 w-10 rounded-full bg-center bg-cover" style="background-image: url('${userData.user_photo || "../assets/img/default.jpeg"}')"></div>
     `;
     document.getElementById("userName").innerHTML = `
-        <span>${userData.first_name}</span>
+      <span>${userData.first_name}</span>
     `;
+  } else {
+    console.error("No se encontraron datos de usuario en localStorage.");
+  }
 }
+
 renderUser();
 
 // 📤 Publicar post

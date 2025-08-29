@@ -6,19 +6,14 @@ const cancelBtn = document.getElementById("cancelBtn");
 const notificationContainer = document.getElementById("notificationContainer");
 
 
-
 function showNotification(message, type) {
-
   const notification = document.createElement('div');
-  
   const baseClasses = "p-4 rounded-lg text-white font-bold opacity-90 transition-opacity duration-500 shadow-lg";
   const successClasses = "bg-green-500";
   const errorClasses = "bg-red-500";
   
   notification.className = `${baseClasses} ${type === 'success' ? successClasses : errorClasses}`;
   notification.textContent = message;
-
- 
   notificationContainer.appendChild(notification);
 
   setTimeout(() => {
@@ -83,12 +78,18 @@ form.addEventListener("submit", async function (event) {
 
     if (!response.ok) throw new Error("Error al actualizar");
 
+    // Convertir la respuesta a JSON para obtener los datos actualizados
     const updatedUser = await response.json();
-    showNotification("✅ Perfil actualizado correctamente", "success")
+    
+    // Actualizar el localStorage con los nuevos datos del usuario.
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    showNotification("✅ Perfil actualizado correctamente", "success");
     console.log("Usuario actualizado:", updatedUser);
+
   } catch (error) {
     console.error(error);
-    showNotification("❌ No se pudo guardar el perfil", "error")
+    showNotification("❌ No se pudo guardar el perfil", "error");
   }
 });
 
