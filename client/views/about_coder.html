@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How It Works — CoderSpace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Inter', system-ui, sans-serif; } </style>
+</head>
+<body class="bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100 selection:bg-violet-200" id="appBody">
+  
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur bg-white/70 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700">
+    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="../index.html" class="text-xl tracking-widest font-bold">CODER<span class="text-violet-600">SPACE</span></a>
+      <div class="hidden sm:flex items-center gap-3">
+        <a href="../index.html" class="px-3 py-2 rounded-xl text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
+        <a href="./login.html" class="px-3 py-2 rounded-xl text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Login</a>
+        <a href="./register.html" class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 shadow-sm">Register</a>
+        <button id="dark-toggle" class="ml-3 px-3 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800">🌙</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="py-16 px-4">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+        How CoderSpace Works
+      </h1>
+      <p class="text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+        Connect with developers worldwide, share knowledge, and grow together in a safe, AI-moderated community.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Features -->
+  <section class="py-16 px-4 bg-slate-50 dark:bg-slate-800/50">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Feature 1: Create Posts -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Create Posts</h3>
+          <p class="text-slate-600 dark:text-slate-300">
+            Share your coding projects, tutorials, insights, and technical discussions. Use markdown formatting, code blocks, and embed images to make your content shine.
+          </p>
+        </div>
+
+        <!-- Feature 2: Ask for Help -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Ask for Help</h3>
+          <p class="text-slate-600 dark:text-slate-300">
+            Stuck on a problem? Post your code, describe your issue, and get help from experienced developers. Tag your posts with relevant technologies for better visibility.
+          </p>
+        </div>
+
+        <!-- Feature 3: Like & Engage -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Like & Engage</h3>
+          <p class="text-slate-600 dark:text-slate-300">
+            Show appreciation for helpful posts and comments with likes. Engage in meaningful discussions and help build a supportive coding community.
+          </p>
+        </div>
+
+        <!-- Feature 4: Build Your Profile -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Build Your Profile</h3>
+          <p class="text-slate-600 dark:text-slate-300">
+            Showcase your skills, projects, and expertise. Add your GitHub, LinkedIn, and portfolio links. Build your reputation through quality contributions.
+          </p>
+        </div>
+
+        <!-- Feature 5: Follow & Connect -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Connect</h3>
+          <p class="text-slate-600 dark:text-slate-300">
+            Connect with developers whose content you enjoy and stay updated with their latest posts. Build meaningful professional connections within the community.
+          </p>
+        </div>
+
+        <!-- Feature 6: Learn & Grow -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Learn & Grow</h3>
+          <p class="text-slate-600 dark:text-slate-300">
+            Discover new technologies, learn from experienced developers, and stay updated with industry trends. Our community is built for continuous learning.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Moderation Warning -->
+  <section class="py-16 px-4">
+    <div class="mx-auto max-w-4xl">
+      <div class="bg-gradient-to-r from-rose-50 to-orange-50 dark:from-rose-900/20 dark:to-orange-900/20 rounded-2xl p-8 border border-rose-200 dark:border-rose-800">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/50 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.634 0L4.168 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold mb-4 text-rose-900 dark:text-rose-100">AI-Powered Content Moderation</h2>
+            <div class="space-y-4 text-slate-700 dark:text-slate-300">
+              <p class="leading-relaxed">
+                <strong>CoderSpace is committed to maintaining a safe and professional environment.</strong> All content posted on our platform is monitored by advanced AI systems to ensure community guidelines are followed.
+              </p>
+              
+              <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-rose-200 dark:border-rose-800">
+                <h3 class="font-semibold text-lg mb-3 text-rose-800 dark:text-rose-200">Prohibited Content</h3>
+                <p class="mb-4">The following types of content are strictly prohibited and will result in immediate action:</p>
+                <ul class="space-y-2 text-sm">
+                  <li class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-rose-500 rounded-full"></span>
+                    <strong>Violent content</strong> - Threats, harassment, or promotion of violence
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-rose-500 rounded-full"></span>
+                    <strong>Sexual content</strong> - Inappropriate or explicit material
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-rose-500 rounded-full"></span>
+                    <strong>Offensive behavior</strong> - Crude language, discrimination, or toxic attitudes
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-rose-500 rounded-full"></span>
+                    <strong>Spam & misleading content</strong> - Irrelevant posts or false information
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
+                <h3 class="font-semibold text-lg mb-3 text-emerald-800 dark:text-emerald-200">Consequences</h3>
+                <p class="text-sm leading-relaxed">
+                  Violations may result in content removal, temporary suspension, or permanent account termination. 
+                  Our AI system learns and improves continuously to better protect our community while allowing 
+                  constructive technical discussions to flourish.
+                </p>
+              </div>
+
+              <p class="text-center font-medium text-rose-800 dark:text-rose-200">
+                Let's build a respectful community where everyone can learn and grow together! 🚀
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Getting Started -->
+  <section class="py-16 px-4 bg-slate-50 dark:bg-slate-800/50">
+    <div class="mx-auto max-w-4xl text-center">
+      <h2 class="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+      <p class="text-xl text-slate-600 dark:text-slate-300 mb-8">
+        Join thousands of developers sharing knowledge and building amazing things together.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="register.html" class="px-8 py-3 bg-violet-600 text-white font-semibold rounded-xl hover:bg-violet-700 transition-colors shadow-sm">
+          Create Account
+        </a>
+        <a href="login.html" class="px-8 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-600">
+          Sign In
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-700 text-center py-6">
+    <p class="text-sm text-slate-600 dark:text-slate-400">© <span id="year"></span> CoderSpace</p>
+  </footer>
+
+  <script src="../js/about.js"></script>
+</body>
+</html>

@@ -397,7 +397,7 @@ async function loadPosts() {
 
         <!-- Código -->
         <div class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
-          <pre><code>${post.code || ""}</code></pre>
+          <pre>${post.code || ""}</pre>
         </div>
 
         <!-- Footer -->
@@ -422,11 +422,14 @@ async function loadPosts() {
   currentIndex += batchSize;
   loading = false;
   hideLoader();
-  renderTopTrending();
+  // renderTopTrending();
 }
 
-// cargar los primeros 5 al inicio
-loadPosts();
+// Cargar trending y posts en paralelo al inicio
+Promise.all([
+  renderTopTrending(),
+  loadPosts()
+]);
 
 // Navegar al perfil de usuario al hacer click en avatar o nombre de post
 document.addEventListener('click', function(e) {
