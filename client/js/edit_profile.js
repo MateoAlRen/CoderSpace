@@ -76,20 +76,28 @@ form.addEventListener("submit", async function (event) {
       body: JSON.stringify(userData)
     });
 
-    if (!response.ok) throw new Error("Error al actualizar");
+    if (!response.ok) {
+      if (res.status === 400) {
+        showNotification("❌ The data is not appropiate...", "error");
+      } else {
+        showNotification("❌ There's a problem with the server", "error");
+      }
+    } else {
+      showNotification("✅ Profile updated succesfully", "success");
+      getUserData(userData.user_email);
+      console.log("User updated");
+    }
 
     // Convertir la respuesta a JSON para obtener los datos actualizados
     const updatedUser = await response.json();
     
     // Actualizar el localStorage con los nuevos datos del usuario.
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("user", JSON.stringify(userData));
 
-    showNotification("✅ Perfil actualizado correctamente", "success");
-    console.log("Usuario actualizado:", updatedUser);
 
   } catch (error) {
     console.error(error);
-    showNotification("❌ No se pudo guardar el perfil", "error");
+    showNotification("❌ There's a problem with the server", "error");
   }
 });
 
@@ -97,3 +105,21 @@ form.addEventListener("submit", async function (event) {
 cancelBtn.addEventListener("click", () => {
   window.location.href = "../views/profile.html"; 
 });
+
+async function getUserData(email) {
+  try {
+    const response = await fetch("http://localhost:3000/users", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    let data = await response.json();
+    let validation = data.find(user => user.user_email === email);
+    if (validation) {
+      localStorage.setItem("user", JSON.stringify(validation));
+      window.location.href = "../views/profile.html";
+    } 
+} catch (error) {
+    console.error(`Your petition has a problem: ${error}`);
+  }
+}

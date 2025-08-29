@@ -59,7 +59,7 @@ async function userConfirm(email, password) {
 
     if (validation) {
       localStorage.setItem("user", JSON.stringify(validation));
-      loginStatus.innerHTML = `<span style="color: rgba(255, 255, 255, 0.555);">Welcome back, ${validation.first_name}!</span>`;
+      loginStatus.innerHTML = `<span style="color: rgba(167, 13, 228, 0.56);">Welcome back, ${validation.first_name}!</span>`;
       setTimeout(() => {
         window.location.href = "../views/feed.html";
       }, 3000);

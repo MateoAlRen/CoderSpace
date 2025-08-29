@@ -290,6 +290,7 @@ let loading = false;
 let allPosts = [];   // aquí guardamos todos los posts
 let currentIndex = 0; // índice de posts ya cargados
 const batchSize = 5; // cantidad de posts por scroll
+let firstLoad = true; // para controlar el loader inicial
 
 // función para traer todos los posts (una sola vez)
 async function fetchAllPosts() {
@@ -303,22 +304,21 @@ async function renderTopTrending() {
   const sidebarList = document.getElementById('ul_trending');
   await fetchAllPosts(); // asegura que ya tengas los posts
 
-  // traer likes y comentarios por cada post
-  const postsWithData = await Promise.all(
-    allPosts.map(async post => {
-      const resLikes = await fetch(`${API_LIKES_URL}/post/${post.post_id}/count`);
-      const likesData = resLikes.ok ? await resLikes.json() : { like_count: 0 };
+  // traer likes y comentarios por cada post de forma secuencial
+  const postsWithData = [];
+  for (const post of allPosts) {
+    const resLikes = await fetch(`${API_LIKES_URL}/post/${post.post_id}/count`);
+    const likesData = resLikes.ok ? await resLikes.json() : { like_count: 0 };
 
-      const resComments = await fetch(`${API_COMMENTS_URL}/post/${post.post_id}/count`);
-      const commentsData = resComments.ok ? await resComments.json() : { comment_count: 0 };
+    const resComments = await fetch(`${API_COMMENTS_URL}/post/${post.post_id}/count`);
+    const commentsData = resComments.ok ? await resComments.json() : { comment_count: 0 };
 
-      return {
-        ...post,
-        like_count: likesData.like_count,
-        comment_count: commentsData.comment_count
-      };
-    })
-  );
+    postsWithData.push({
+      ...post,
+      like_count: likesData.like_count,
+      comment_count: commentsData.comment_count
+    });
+  }
 
   // ordenar y tomar top 3
   postsWithData.sort((a, b) => b.like_count - a.like_count);
@@ -326,7 +326,7 @@ async function renderTopTrending() {
 
   // limpiar y pintar
   sidebarList.innerHTML = '';
-  top3.forEach(post => {
+  for (const post of top3) {
     const li = document.createElement('li');
     li.classList.add('group', 'cursor-pointer');
     li.innerHTML = `
@@ -347,7 +347,7 @@ async function renderTopTrending() {
       </div>
     `;
     sidebarList.appendChild(li);
-  });
+  }
 }
 
 
@@ -359,10 +359,13 @@ const USER_ID = userData ? userData.user_id : null;
 
 async function loadPosts() {
   if (loading) return;
-  loading = true;
-  showLoader();
-
   await fetchAllPosts();
+  if (currentIndex >= allPosts.length) return;
+
+  loading = true;
+  if (firstLoad) {
+    showLoader();
+  }
 
   const container = document.getElementById("renderPosts");
   const nextPosts = allPosts.slice(currentIndex, currentIndex + batchSize);
@@ -381,33 +384,25 @@ async function loadPosts() {
     const likes = resLikes.ok ? await resLikes.json() : [];
     const userLike = likes.find(like => like.user_id === USER_ID);
 
-    container.innerHTML += `
-      <article class="card mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow">
-
-        <!-- HEADER (autor + fecha) -->
+    // Crear el elemento post con fade-in
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = `
+      <article class="card mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 hover:shadow-lg transition-shadow opacity-0 transition-opacity duration-700">
         <div class="flex items-center gap-3 mb-4">
           <div class="h-10 w-10 rounded-full bg-center bg-cover" style="background-image: url('${post.user_photo || "../assets/img/default.jpeg"}')"></div>
           <div>
             <p class="font-semibold">${post.user_name}</p>
           </div>
         </div>
-
-        <!-- Título -->
         <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
           ${post.title}
         </h2>
-
-        <!-- Descripción -->
         <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
           ${post.description}
         </p>
-
-        <!-- Código -->
         <div class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-green-400 text-sm font-mono rounded-xl p-4 overflow-x-auto mb-4">
           <pre>${post.code || ""}</pre>
         </div>
-
-        <!-- Footer -->
         <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-800">
           <div class="flex items-center gap-6">
           <button class="like-btn flex items-center gap-1 transition-colors"  
@@ -424,11 +419,20 @@ async function loadPosts() {
         </div>
       </article>
     `;
+    const postElement = tempDiv.firstElementChild;
+    container.appendChild(postElement);
+    // Forzar el fade-in
+    setTimeout(() => {
+      postElement.classList.remove('opacity-0');
+    }, 50);
   }
 
   currentIndex += batchSize;
   loading = false;
-  hideLoader();
+  if (firstLoad) {
+    hideLoader();
+    firstLoad = false;
+  }
 }
 
 // Cargar trending y posts en paralelo al inicio
@@ -467,7 +471,8 @@ document.addEventListener('click', function(e) {
 
 // evento scroll para cargar más
 window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+  // Cargar más posts cuando el usuario esté a 3000px del fondo
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 3000) {
     loadPosts();
   }
 });
