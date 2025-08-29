@@ -35,6 +35,43 @@ router.get('/', async (req, res) => {
     }
 });
 
+// User count on the platform
+router.get("/count", async (req, res) => {
+  try {
+    const connection = await conectarDB();
+    const query = `
+      SELECT COUNT(*) AS total_user
+      FROM users;
+    `;
+    const [rows] = await connection.execute(query);
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("Server error", error);
+    res.status(500).json({ mensaje: "Server error" });
+  }
+});
+
+// Users
+router.get("/post_user", async (req, res) => {
+  try {
+    const connection = await conectarDB();
+    const query = `
+        SELECT u.user_id, u.first_name, u.first_lastname, u.created_at, COUNT(p.post_id) AS post
+        FROM users u
+        LEFT JOIN post p ON u.user_id = p.user_id
+        GROUP BY u.user_id, u.first_name, u.first_lastname, u.created_at
+        ORDER BY u.user_id;
+    `;
+    const [rows] = await connection.execute(query);
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("Server error", error);
+    res.status(500).json({ mensaje: "Server error" });
+  }
+});
+
 // Get a user by ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
