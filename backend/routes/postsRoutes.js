@@ -64,6 +64,44 @@ router.get("/postdata", async (req, res) => {
   }
 });
 
+// Post count on the platform
+router.get("/count", async (req, res) => {
+  try {
+    const connection = await conectarDB();
+    const query = `
+      SELECT COUNT(*) AS total_post
+      FROM post;
+    `;
+    const [rows] = await connection.execute(query);
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("Server error", error);
+    res.status(500).json({ mensaje: "Server error" });
+  }
+});
+
+// Get post with user
+router.get("/user", async (req, res) => {
+  try {
+    const connection = await conectarDB();
+    const query = `
+      SELECT p.post_id, u.first_name, p.post_title, p.created_at, COUNT(DISTINCT c.comment_id) AS total_comment, COUNT(DISTINCT l.like_id) AS total_likes
+      FROM post p
+	    JOIN users u ON p.user_id = u.user_id
+      LEFT JOIN commentary c ON p.post_id = c.post_id
+	    LEFT JOIN likes l ON p.post_id = l.post_id
+      GROUP BY p.post_id;
+    `;
+    const [rows] = await connection.execute(query);
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error("Server error", error);
+    res.status(500).json({ mensaje: "Server error" });
+  }
+});
+
 // Get a post by id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;

@@ -51,16 +51,23 @@ async function userConfirm(email, password) {
   try {
     const response = await fetch(LOGIN_URL, {
       method: "GET",
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
 
     let data = await response.json();
-    let validation = data.find(user => user.user_email === email && user.user_password === password);
+    let validation = data.find(
+      (user) => user.user_email === email && user.user_password === password
+    );
 
     if (validation) {
       localStorage.setItem("user", JSON.stringify(validation));
-      loginStatus.innerHTML = `<span style="color: rgba(167, 13, 228, 0.56);">Welcome back, ${validation.first_name}!</span>`;
+      loginStatus.innerHTML = `<span style="color: rgba(255, 255, 255, 0.555);">Welcome back, ${validation.first_name}!</span>`;
       setTimeout(() => {
+        if (validation.type === "admin") {
+          window.location.href = "../views/admin_dashboard.html";
+        } else {
+          window.location.href = "../views/feed.html";
+        }
         window.location.href = "../views/feed.html";
       }, 3000);
     } else {
@@ -70,4 +77,3 @@ async function userConfirm(email, password) {
     console.error(`Your petition has a problem: ${error}`);
   }
 }
-
