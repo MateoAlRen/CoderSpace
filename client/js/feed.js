@@ -86,7 +86,7 @@ function showLoader() {
     loader.className = 'fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80';
     loader.innerHTML = `
       <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600 border-b-4 border-purple-600"></div>
-      <span class="ml-6 text-xl font-bold text-indigo-600 dark:text-purple-400">Cargando...</span>
+      <span class="ml-6 text-xl font-bold text-indigo-600 dark:text-purple-400">Loading...</span>
     `;
     document.body.appendChild(loader);
   }
@@ -427,6 +427,34 @@ async function loadPosts() {
 
 // cargar los primeros 5 al inicio
 loadPosts();
+
+// Navegar al perfil de usuario al hacer click en avatar o nombre de post
+document.addEventListener('click', function(e) {
+    // Avatar o nombre en post
+    const avatar = e.target.closest('.h-10.w-10.rounded-full');
+    const name = e.target.closest('.font-semibold');
+    let postCard = null;
+    if (avatar) {
+        postCard = avatar.closest('article');
+    } else if (name) {
+        postCard = name.closest('article');
+    }
+    if (postCard) {
+        // Buscar el post en allPosts usando el id del post
+        const postId = postCard.querySelector('.like-btn')?.dataset?.postId;
+        const postObj = allPosts.find(p => String(p.post_id) === String(postId));
+        if (postObj && postObj.user_id) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            // Siempre navega a profile.html, usando localStorage para distinguir el usuario
+            if (userData && String(userData.user_id) === String(postObj.user_id)) {
+                window.location.href = '../views/profile.html';
+            } else {
+                localStorage.setItem('profileToShow', postObj.user_id);
+                window.location.href = '../views/profile.html';
+            }
+        }
+    }
+});
 
 // evento scroll para cargar más
 window.addEventListener("scroll", () => {
