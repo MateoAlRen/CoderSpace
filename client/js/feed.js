@@ -429,7 +429,6 @@ async function loadPosts() {
   currentIndex += batchSize;
   loading = false;
   hideLoader();
-  // renderTopTrending();
 }
 
 // Cargar trending y posts en paralelo al inicio

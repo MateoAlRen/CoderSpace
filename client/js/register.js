@@ -81,12 +81,29 @@ async function postUser(userData) {
         console.error(`There's an error in the server`);
       }
     } else {
-      localStorage.setItem("user", JSON.stringify(userData))
-      window.location.href = "../views/feed.html";
+      getUsers(userData.user_email);
     }
     
-
   } catch (error) {
+    console.error(`Your petition has a problem: ${error}`);
+  }
+}
+
+async function getUsers(email) {
+  try {
+    const response = await fetch("http://localhost:3000/users", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    let data = await response.json();
+    let validation = data.find(user => user.user_email === email);
+    if (validation) {
+      localStorage.setItem("user", JSON.stringify(validation));
+      signStatus.innerHTML = `<span style="color: rgba(88, 56, 233, 1);">Welcome to CoderSpace!</span>`;
+      window.location.href = "../views/feed.html";
+    } 
+} catch (error) {
     console.error(`Your petition has a problem: ${error}`);
   }
 }
