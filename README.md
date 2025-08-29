@@ -120,7 +120,7 @@ git clone https://github.com/MateoAlRen/CoderSpace.git
 cd CoderSpace
 
 #3 Install dependencies
-npm install
+npm install express dotenv cors openai mysql2
 
 #4 Run development server
 npm run dev
@@ -149,7 +149,7 @@ The application will be available at:**http://localhost:3000**
 
 - **Berners lee**: Mateo, Jose, Yeferson, Thomas.
 
-- **Ritchie**: Isabella
+- **Van Rossum**: Isabella
 
 
 ## Development Team 👥 
@@ -159,5 +159,6 @@ The application will be available at:**http://localhost:3000**
 - **Developer (Jose Cortes)** - Works on both frontend and backend, implements core features, and manages API integration.
 - **Developer (Yeferson Garcia)** - Focuses on UI development, responsive design, and user experience.  
 - **Developer (Thomas Noriega)** - backend and databases, designs RESTful APIs, and ensures system security and performance.  
+
 
 
