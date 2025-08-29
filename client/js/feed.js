@@ -1,3 +1,5 @@
+// Mostrar loader al entrar a la página
+showLoader();
 let userData = JSON.parse(localStorage.getItem("user"));
 
 
